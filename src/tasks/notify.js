@@ -29,9 +29,9 @@ const msgDefaults = {
   //   }
   // })
   var attachments = {
-      title: `test title`,
-      title_link: `test title link`,
-      text: `test text`,
+      title: '`test title`',
+      title_link: '`test title link`',
+      text: '`test text`',
       mrkdwn_in: ['text', 'pretext']
   }
 

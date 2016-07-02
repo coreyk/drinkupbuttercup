@@ -13,7 +13,10 @@ const config = {
   WEBHOOK_URL: process.env.WEBHOOK_URL,
   APP_COMMAND_TOKEN: process.env.APP_COMMAND_TOKEN,
   SLACK_TOKEN: process.env.SLACK_TOKEN,
-  ICON_EMOJI: ':beers:'
+  ICON_EMOJI: ':beers:',
+  GOOGLE_API_NAME: process.env.GOOGLE_API_NAME,
+  GOOGLE_API_KEY: process.env.GOOGLE_API_KEY,
+  GOOGLE_CSE_CX: process.env.GOOGLE_CSE_CX
 }
 
 module.exports = (key) => {
