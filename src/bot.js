@@ -19,14 +19,14 @@ bot.message((msg) => {
     token: config('SLACK_TOKEN'),
     icon_emoji: config('ICON_EMOJI'),
     channel: msg.channel,
-    username: 'Starbot',
-    text: `beep boop: I hear you loud and clear!"`
+    username: 'Drink Up!',
+    text: `glug glug: I hear you loud and clear!"`
   }, (err, data) => {
     if (err) throw err
 
     let txt = _.truncate(data.message.text)
 
-    console.log(`🤖  beep boop: I responded with "${txt}"`)
+    console.log(`🤖  glug glug: I responded with "${txt}"`)
   })
 })
 
