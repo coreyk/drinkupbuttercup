@@ -36,7 +36,10 @@ mongodb.MongoClient.connect(config('MONGODB_URI'), (err, database) => {
 
   // Save database object from the callback for reuse.
   db = database;
-  console.log("Database connection ready", db.collectionNames());
+  console.log("Database connection ready");
+  db.collectionNames(function(err, collections){
+      console.log(collections);
+  });
 
   // // Initialize the app.
   // var server = app.listen(process.env.PORT || 8080, function () {
