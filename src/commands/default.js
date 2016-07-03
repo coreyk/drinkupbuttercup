@@ -34,10 +34,14 @@ var searchit = function(query, cb){
 
 let beers = [
   {
-    name: 'Other Half All Citra Everything'
+    tap: 1,
+    name: 'Other Half All Citra Everything',
+    size: 5
   },
   {
-    name: 'Brooklyn Lager'
+    tap: 2,
+    name: 'Brooklyn Lager',
+    size: 5
   }
 ]
 
@@ -48,7 +52,7 @@ beers.forEach(function(beer, i){
   searchit(beer.name, function(resp){
     attachments.push(
       {
-        title: 'Tap ' + i + ': ' + beer.name,
+        title: 'Tap ' + beer.tap + ': ' + beer.name,
         // title_link: resp.link,
         // color: '#2FA44F',
         // text: resp.snippet,
