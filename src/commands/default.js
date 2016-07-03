@@ -63,7 +63,7 @@ let beers = [
   }
 ]
 
-let attachments = []
+// let attachments = []
 
 
 // beers.forEach(function(beer, i){
@@ -90,7 +90,7 @@ var attachments = beers.slice(0, 4).map((beer) => {
     text: `ABV • ${beer.abv}%`,
     mrkdwn_in: ['text', 'pretext']
   }
-})
+}
 
 // let attachments = [
 //   {
