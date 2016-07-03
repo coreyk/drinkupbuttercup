@@ -26,8 +26,8 @@ var searchit = function(query, cb){
       if (resp.items && resp.items.length > 0) {
         console.log('First result name is ' + resp.items[0].title);
       }
-      // return resp.items[0]
-      process.nextTick(cb(resp.items[0]))
+      return resp.items[0].link
+      // process.nextTick(cb(resp.items[0]))
     });
   }
 }
@@ -36,24 +36,28 @@ let beers = [
   {
     tap: 1,
     name: 'Other Half All Citra Everything IPA',
+    url: 'http://www.beeradvocate.com/beer/profile/33510/220357/',
     abv: 8.5,
     size: 5
   },
   {
     tap: 2,
     name: 'Brooklyn Lager',
+    url: 'http://www.beeradvocate.com/beer/profile/45/148/',
     abv: 5.2,
     size: 5
   },
   {
     tap: 3,
     name: 'Other Half Magic Green Nuggets IPA',
+    url: '',
     abv: 9.3,
     size: 5
   },
   {
     tap: 4,
     name: 'Allagash White',
+    url: 'http://www.beeradvocate.com/beer/profile/4/59/',
     abv: 5.1,
     size: 5
   }
@@ -62,21 +66,30 @@ let beers = [
 let attachments = []
 
 
-beers.forEach(function(beer, i){
-  searchit(beer.name, function(resp){
-    console.log(resp)
-    attachments.push(
-      {
-        title: 'Tap ' + beer.tap + ': ' + beer.name,
-        // title_link: resp.link,
-        // color: '#2FA44F',
-        // text: resp.snippet,
-        text: `ABV: ${beer.abv}%`,
-        mrkdwn_in: ['text']
-      }
-    )
-  })
+// beers.forEach(function(beer, i){
+//   searchit(beer.name, function(resp){
+//     console.log(resp)
+//     attachments.push(
+//       {
+//         title: 'Tap ' + beer.tap + ': ' + beer.name,
+//         // title_link: resp.link,
+//         // color: '#2FA44F',
+//         // text: resp.snippet,
+//         text: 'ABV: ' + beer.abv + '%',
+//         mrkdwn_in: ['text']
+//       }
+//     )
+//   })
+//
+// })
 
+var attachments = beers.slice(0, 4).map((beer) => {
+  return {
+    title: `Tap ${beer.tap} • ${beer.name} `,
+    title_link: `${beer.url}`,
+    text: `ABV • ${beer.abv}%`,
+    mrkdwn_in: ['text', 'pretext']
+  }
 })
 
 // let attachments = [
