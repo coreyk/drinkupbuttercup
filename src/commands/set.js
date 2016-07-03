@@ -5,7 +5,7 @@ const _ = require('lodash')
 const google = require('googleapis')
 const config = require('../config')
 
-google.resultsPerPage = 1
+//ex: mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:98765/heroku_hostname
 
 const msgDefaults = {
   response_type: 'in_channel',
@@ -83,4 +83,4 @@ const handler = (payload, res) => {
   return
 }
 
-module.exports = { pattern: /info/ig, handler: handler }
+module.exports = { pattern: /set/ig, handler: handler }
