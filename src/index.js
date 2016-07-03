@@ -37,7 +37,7 @@ mongodb.MongoClient.connect(config('MONGODB_URI'), (err, database) => {
   // Save database object from the callback for reuse.
   db = database;
   console.log("Database connection ready");
-  db.collections(function(err, collections){
+  db.listCollections().toArray(function(err, collections){
       console.log(collections);
   });
 
