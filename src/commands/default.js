@@ -33,6 +33,13 @@ let attachments = [
     color: '#2FA44F',
     text: '`${searchit}` link!',
     mrkdwn_in: ['text']
+  },
+  {
+    title: 'Tap 2: Brooklyn Lager',
+    title_link: "http://www.beeradvocate.com/beer/profile/45/148/",
+    color: '#2FA44F',
+    text: '`http://www.beeradvocate.com/beer/profile/45/148/` link!',
+    mrkdwn_in: ['text']
   }
 ]
 
