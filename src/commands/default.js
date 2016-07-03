@@ -85,9 +85,9 @@ let beers = [
 
 var attachments = beers.slice(0, 4).map((beer) => {
   return {
-    title: `Tap ${beer.tap} • ${beer.name} `,
+    title: `${beer.name}`,
     title_link: `${beer.url}`,
-    text: `ABV • ${beer.abv}%`,
+    text: `• ABV ${beer.abv}%  • Tap ${beer.tap}`,
     mrkdwn_in: ['text', 'pretext']
   }
 })
