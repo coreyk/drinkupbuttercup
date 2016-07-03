@@ -31,7 +31,7 @@ let attachments = [
     title: 'Tap 1: Other Half All Citra Everything',
     title_link: searchit,
     color: '#2FA44F',
-    text: '`/beer tap #` returns just that tap\'s selection',
+    text: '`${searchit}` link!',
     mrkdwn_in: ['text']
   }
 ]
