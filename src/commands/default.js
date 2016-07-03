@@ -70,7 +70,7 @@ beers.forEach(function(beer, i){
         // title_link: resp.link,
         // color: '#2FA44F',
         // text: resp.snippet,
-        text: 'beer',
+        text: 'ABV ${beer.abv}%',
         mrkdwn_in: ['text']
       }
     )
