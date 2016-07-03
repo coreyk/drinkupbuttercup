@@ -17,7 +17,6 @@ var customsearch = google.customsearch('v1');
 
 var searchit = function(query, cb){
   if (query) {
-    process.nextTick(cb);
     customsearch.cse.list({ cx: config('GOOGLE_CSE_CX'), q: query, auth: config('GOOGLE_API_KEY') }, function (err, resp) {
       if (err) {
         return console.log('An error occured', err);
@@ -25,9 +24,10 @@ var searchit = function(query, cb){
       // Got the response from custom search
       console.log('Result: ' + resp.searchInformation.formattedTotalResults);
       if (resp.items && resp.items.length > 0) {
-        console.log('First result name is ' + resp.items[0].name);
+        console.log('First result name is ' + resp.items[0].title);
       }
-      return resp.items[0]
+      // return resp.items[0]
+      process.nextTick(cb(resp.items[0]))
     });
   }
 }
@@ -64,13 +64,14 @@ let attachments = []
 
 beers.forEach(function(beer, i){
   searchit(beer.name, function(resp){
+    console.log(resp)
     attachments.push(
       {
         title: 'Tap ' + beer.tap + ': ' + beer.name,
         // title_link: resp.link,
         // color: '#2FA44F',
         // text: resp.snippet,
-        text: 'ABV ${beer.abv}%',
+        text: `ABV: ${beer.abv}%`,
         mrkdwn_in: ['text']
       }
     )
