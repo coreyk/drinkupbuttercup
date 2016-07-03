@@ -35,12 +35,26 @@ var searchit = function(query, cb){
 let beers = [
   {
     tap: 1,
-    name: 'Other Half All Citra Everything',
+    name: 'Other Half All Citra Everything IPA',
+    abv: 8.5,
     size: 5
   },
   {
     tap: 2,
     name: 'Brooklyn Lager',
+    abv: 5.2,
+    size: 5
+  },
+  {
+    tap: 3,
+    name: 'Other Half Magic Green Nuggets IPA',
+    abv: 9.3,
+    size: 5
+  },
+  {
+    tap: 4,
+    name: 'Allagash White',
+    abv: 5.1,
     size: 5
   }
 ]
