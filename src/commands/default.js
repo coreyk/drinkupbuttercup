@@ -15,18 +15,21 @@ const msgDefaults = {
 
 var customsearch = google.customsearch('v1');
 
-function searchit(query){
-  customsearch.cse.list({ cx: config('GOOGLE_CSE_CX'), q: query, auth: config('GOOGLE_API_KEY') }, function (err, resp) {
-    if (err) {
-      return console.log('An error occured', err);
-    }
-    // Got the response from custom search
-    console.log('Result: ' + resp.searchInformation.formattedTotalResults);
-    if (resp.items && resp.items.length > 0) {
-      console.log('First result name is ' + resp.items[0].name);
-    }
-    return resp.items[0]
-  });
+var searchit = function(query, cb){
+  if (query) {
+    process.nextTick(cb);
+    customsearch.cse.list({ cx: config('GOOGLE_CSE_CX'), q: query, auth: config('GOOGLE_API_KEY') }, function (err, resp) {
+      if (err) {
+        return console.log('An error occured', err);
+      }
+      // Got the response from custom search
+      console.log('Result: ' + resp.searchInformation.formattedTotalResults);
+      if (resp.items && resp.items.length > 0) {
+        console.log('First result name is ' + resp.items[0].name);
+      }
+      return resp.items[0]
+    });
+  }
 }
 
 let beers = [
@@ -43,16 +46,18 @@ let attachments = []
 
 beers.forEach(function(beer, i){
   console.log(beer.name)
-  var goo = searchit(beer.name)
-  attachments.push(
-    {
-      title: 'Tap ' + i + ': ' + beer.name,
-      title_link: goo.link,
-      color: '#2FA44F',
-      text: goo.snippet,
-      mrkdwn_in: ['text']
-    }
-  )
+  var goo = searchit(beer.name, function(){
+    attachments.push(
+      {
+        title: 'Tap ' + i + ': ' + beer.name,
+        title_link: goo.link,
+        color: '#2FA44F',
+        text: goo.snippet,
+        mrkdwn_in: ['text']
+      }
+    )
+  })
+
 })
 
 // let attachments = [
