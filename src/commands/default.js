@@ -14,34 +14,56 @@ const msgDefaults = {
 }
 
 var customsearch = google.customsearch('v1');
-var searchit = customsearch.cse.list({ cx: config('GOOGLE_CSE_CX'), q: 'Other Half All Citra Everything', auth: config('GOOGLE_API_KEY') }, function (err, resp) {
-  if (err) {
-    return console.log('An error occured', err);
-  }
-  // Got the response from custom search
-  console.log('Result: ' + resp.searchInformation.formattedTotalResults);
-  if (resp.items && resp.items.length > 0) {
-    console.log('First result name is ' + resp.items[0].link);
-  }
-  return resp.items[0].link
-});
 
-let attachments = [
+function searchit(query){
+  customsearch.cse.list({ cx: config('GOOGLE_CSE_CX'), q: query, auth: config('GOOGLE_API_KEY') }, function (err, resp) {
+    if (err) {
+      return console.log('An error occured', err);
+    }
+    // Got the response from custom search
+    console.log('Result: ' + resp.searchInformation.formattedTotalResults);
+    if (resp.items && resp.items.length > 0) {
+      console.log('First result name is ' + resp.items[0].name);
+    }
+    return resp.items[0]
+  });
+}
+
+let beers = [
   {
-    title: 'Tap 1: Other Half All Citra Everything',
-    title_link: searchit,
-    color: '#2FA44F',
-    text: '`${searchit}` link!',
-    mrkdwn_in: ['text']
+    name: 'Other Half All Citra Everything'
   },
   {
-    title: 'Tap 2: Brooklyn Lager',
-    title_link: "http://www.beeradvocate.com/beer/profile/45/148/",
-    color: '#2FA44F',
-    text: '`http://www.beeradvocate.com/beer/profile/45/148/` link!',
-    mrkdwn_in: ['text']
+    name: 'Brooklyn Lager'
   }
 ]
+
+let attachments = []
+
+
+beers.forEach(function(beer, i){
+  console.log(beer.name)
+  var goo = searchit(beer.name)
+  attachments.push(
+    {
+      title: 'Tap ' + i + ': ' + beer.name,
+      title_link: goo.link,
+      color: '#2FA44F',
+      text: goo.snippet,
+      mrkdwn_in: ['text']
+    }
+  )
+})
+
+// let attachments = [
+//   {
+//     title: 'Tap 1: ',
+//     title_link: searchit,
+//     color: '#2FA44F',
+//     text: '`${searchit}` link!',
+//     mrkdwn_in: ['text']
+//   }
+// ]
 
 const handler = (payload, res) => {
   let msg = _.defaults({
