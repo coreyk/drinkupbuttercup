@@ -46,13 +46,13 @@ let attachments = []
 
 beers.forEach(function(beer, i){
   console.log(beer.name)
-  var goo = searchit(beer.name, function(){
+  searchit(beer.name, function(resp){
     attachments.push(
       {
         title: 'Tap ' + i + ': ' + beer.name,
-        title_link: goo.link,
+        title_link: resp.link,
         color: '#2FA44F',
-        text: goo.snippet,
+        text: resp.snippet,
         mrkdwn_in: ['text']
       }
     )
