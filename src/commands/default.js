@@ -21,7 +21,7 @@ var searchit = customsearch.cse.list({ cx: config('GOOGLE_CSE_CX'), q: 'Other Ha
   // Got the response from custom search
   console.log('Result: ' + resp.searchInformation.formattedTotalResults);
   if (resp.items && resp.items.length > 0) {
-    console.log('First result name is ' + resp.items[0].title);
+    console.log('First result name is ' + resp.items[0].link);
   }
   return resp.items[0].link
 });
