@@ -76,16 +76,24 @@ let attachments = [{
 }]
 
 const handler = (payload, res) => {
-  // console.log(payload);
 
-  // attachments[0].text = payload.text
-  //\S+|"[^"]+"
   var arr = parseString(cognate.replace(payload.text)) || [];
-  // var arr = cognate.replace(payload.text).match(/\S+|"[^"]+"/g) || [];
-  // var arr = payload.text.match(/"[^"]*"|[^ ]+/g) || [];
 
-  console.log(arr);
-  attachments[0].text = JSON.stringify(arr, null, 4)
+  var beer = [
+    {
+      tap: arr[1],
+      name: arr[2],
+      url: searchit(arr[2]) || "",
+      abv: arr[3] || "",
+      size arr[4] || 5
+    }
+  ];
+
+
+
+  console.log(beer);
+  // attachments[0].text = JSON.stringify(arr, null, 4)
+  attachments[0].text = beer
 
   let msg = _.defaults({
     channel: payload.channel_name,
