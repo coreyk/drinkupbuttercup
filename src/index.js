@@ -48,6 +48,7 @@ co(function*() {
     }
   })
 
+  db.close();
 }).catch(function(err) {
   console.log(err.stack);
 });
