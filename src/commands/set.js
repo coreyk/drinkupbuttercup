@@ -70,7 +70,9 @@ let attachments = [{
 const handler = (payload, res) => {
   console.log(payload);
 
-  attachments[0].text = payload.text
+  // attachments[0].text = payload.text
+  var arr = payload.text.match(/"[^"]*"|[^ ]+/g) || [];
+  attachments[0].text = JSON.stringify(arr, null, 4)
 
   let msg = _.defaults({
     channel: payload.channel_name,
