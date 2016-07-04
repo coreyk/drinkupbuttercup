@@ -14,6 +14,7 @@ const msgDefaults = {
 }
 
 const handler = (payload, res) => {
+  let attachments = []
 
   co(function*() {
     var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
@@ -45,7 +46,7 @@ const handler = (payload, res) => {
       }
     ]
 
-    let attachments = beers.map((beer) => {
+    attachments = beers.map((beer) => {
       return {
         title: `${beer.name}`,
         title_link: `${beer.url}`,
