@@ -7,7 +7,7 @@ const co = require('co')
 const assert = require('assert')
 const google = require('googleapis')
 const cognate = require('cognate')
-const x-ray = require('x-ray')
+const Xray = require('x-ray')
 const config = require('../config')
 
 const msgDefaults = {
@@ -35,8 +35,8 @@ const handler = (payload, res) => {
     if (err) {
       return console.log('An error occured', err);
     }
-    
-    var xray = x-ray();
+
+    var xray = Xray();
     var abv;
 
     xray(resp.items[0].link, 'div#ba-content div:nth-child(3) div:nth-child(1)')(function(err, text) {
