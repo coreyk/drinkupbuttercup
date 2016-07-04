@@ -20,14 +20,14 @@ const handler = (payload, res) => {
     var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
     console.log("Connected correctly to server");
 
-    var col = db.collection('beers');
+    let col = db.collection('beers');
 
-    var taps = [1, 2];
-    var beers = [];
+    let taps = [1, 2];
+    let beers = [];
     taps.forEach((tap) => {
-      var beer = yield col.find({tap: tap}).limit(1).sort({_id: -1});
-      assert.equal(1, beer.length);
-      beers.push(beer);
+      var r = yield col.find({tap: tap}).limit(1).sort({_id: -1});
+      assert.equal(1, r.length);
+      beers.push(r);
     })
 
     // let beers = [
