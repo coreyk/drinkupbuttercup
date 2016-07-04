@@ -27,7 +27,7 @@ const handler = (payload, res) => {
 
     for (var i = 0; i < taps.length; i++) {
       var r = yield col.find({tap: taps[i]}).limit(1).sort({_id: -1}).toArray();
-      beers.push(r);
+      beers.push(r[0]);
     }
     // var r = yield col.find({tap: 1}).limit(1).sort({_id: -1});
 
