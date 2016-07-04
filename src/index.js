@@ -6,6 +6,8 @@ const proxy = require('express-http-proxy')
 const bodyParser = require('body-parser')
 const _ = require('lodash')
 const mongodb = require('mongodb')
+const co = require('co')
+const assert = require('assert')
 const config = require('./config')
 const commands = require('./commands')
 const helpCommand = require('./commands/help')
@@ -24,28 +26,12 @@ if (config('PROXY_URI')) {
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 
-// Create a database variable outside of the database connection callback to reuse the connection pool in your app.
 let db;
 
-// Connect to the database before starting the application server.
-mongodb.MongoClient.connect(config('MONGODB_URI'), (err, database) => {
-  if (err) {
-    console.log(err);
-    process.exit(1);
-  }
+co(function*() {
+  db = yield mongodb.MongoClient.connect(config('MONGODB_URI'))
 
-  // Save database object from the callback for reuse.
-  db = database;
-  console.log("Database connection ready");
-  db.listCollections().toArray(function(err, collections){
-      console.log(collections);
-  });
-
-  // // Initialize the app.
-  // var server = app.listen(process.env.PORT || 8080, function () {
-  //   var port = server.address().port;
-  //   console.log("App now running on port", port);
-  // });
+  console.log("Database connection ready")
 
   app.listen(config('PORT'), (err) => {
     if (err) throw err
@@ -57,7 +43,31 @@ mongodb.MongoClient.connect(config('MONGODB_URI'), (err, database) => {
       bot.listen({ token: config('SLACK_TOKEN') })
     }
   })
+
+}).catch(function(err) {
+  console.log(err.stack);
 });
+
+// mongodb.MongoClient.connect(config('MONGODB_URI'), (err, database) => {
+//   if (err) {
+//     console.log(err);
+//     process.exit(1);
+//   }
+//
+//   db = database;
+//   console.log("Database connection ready");
+//
+//   app.listen(config('PORT'), (err) => {
+//     if (err) throw err
+//
+//     console.log(`\n🍻  Beer is flowing on PORT ${config('PORT')} 🍻`)
+//
+//     if (config('SLACK_TOKEN')) {
+//       console.log(`🤖  glug glug: drinking in real-time\n`)
+//       bot.listen({ token: config('SLACK_TOKEN') })
+//     }
+//   })
+// });
 
 app.get('/', (req, res) => { res.send('\n 👋 🌍 \n') })
 
