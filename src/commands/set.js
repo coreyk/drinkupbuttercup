@@ -40,7 +40,8 @@ const handler = (payload, res) => {
     var xray = Xray();
     var abv;
 
-    xray(resp.items[0].link, 'div#ba-content div:nth-child(3) div:nth-child(1)')(function(err, text) {
+    // xray(resp.items[0].link, 'div#ba-content div:nth-child(3) div:nth-child(1)')(function(err, text) {
+    xray(resp.items[0].link, 'div#ba-content')(function(err, text) {
       console.log(text)
     })
 
