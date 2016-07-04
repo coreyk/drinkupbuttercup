@@ -29,9 +29,13 @@ app.use(bodyParser.urlencoded({ extended: true }))
 let db;
 
 co(function*() {
-  db = yield mongodb.MongoClient.connect(config('MONGODB_URI'))
+  db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
 
-  console.log("Database connection ready")
+  console.log("Database connection ready");
+
+  db.listCollections().toArray(function(err, collections){
+    console.log(collections);
+  });
 
   app.listen(config('PORT'), (err) => {
     if (err) throw err
