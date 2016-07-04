@@ -56,18 +56,19 @@ const handler = (payload, res) => {
     })
 
     db.close();
+
+    let msg = _.defaults({
+      channel: payload.channel_name,
+      attachments: attachments
+    }, msgDefaults)
+
+    res.set('content-type', 'application/json')
+    res.status(200).json(msg)
+    return
+
   }).catch(function(err) {
     console.log(err.stack);
   });
-
-  let msg = _.defaults({
-    channel: payload.channel_name,
-    attachments: attachments
-  }, msgDefaults)
-
-  res.set('content-type', 'application/json')
-  res.status(200).json(msg)
-  return
 }
 
 module.exports = { pattern: /info/ig, handler: handler }
