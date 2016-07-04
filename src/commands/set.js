@@ -14,7 +14,7 @@ const msgDefaults = {
 
 var customsearch = google.customsearch('v1');
 
-var searchit = (query, cb) => {
+var lookupLink = (query, cb) => {
   if (query) {
     customsearch.cse.list({ cx: config('GOOGLE_CSE_CX'), q: query, auth: config('GOOGLE_API_KEY') }, function (err, resp) {
       if (err) {
@@ -79,19 +79,20 @@ const handler = (payload, res) => {
 
   var arr = parseString(cognate.replace(payload.text)) || [];
 
+  var link = lookupLink(arr[2]);
+
   var beer = [
     {
       tap: arr[1],
       name: arr[2],
-      url: searchit(arr[2]) || "",
+      url: link || "",
       abv: arr[3] || "",
       size: arr[4] || 5
     }
   ];
 
   console.log(beer);
-  // attachments[0].text = JSON.stringify(arr, null, 4)
-  attachments[0].text = beer
+  attachments[0].text = JSON.stringify(beer, null, 4)
 
   let msg = _.defaults({
     channel: payload.channel_name,
