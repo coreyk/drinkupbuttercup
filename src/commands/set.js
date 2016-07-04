@@ -85,11 +85,9 @@ const handler = (payload, res) => {
       name: arr[2],
       url: searchit(arr[2]) || "",
       abv: arr[3] || "",
-      size arr[4] || 5
+      size: arr[4] || 5
     }
   ];
-
-
 
   console.log(beer);
   // attachments[0].text = JSON.stringify(arr, null, 4)
