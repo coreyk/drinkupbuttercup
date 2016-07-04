@@ -33,10 +33,6 @@ co(function*() {
 
   console.log("Database connection ready");
 
-  db.listCollections().toArray( (err, collections) => {
-    console.log(collections);
-  });
-
   app.listen(config('PORT'), (err) => {
     if (err) throw err
 
