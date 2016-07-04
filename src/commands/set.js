@@ -3,6 +3,7 @@
 
 const _ = require('lodash')
 const google = require('googleapis')
+const cognate = require('cognate')
 const config = require('../config')
 
 const msgDefaults = {
@@ -72,7 +73,7 @@ const handler = (payload, res) => {
 
   // attachments[0].text = payload.text
   //\S+|"[^"]+"
-  var arr = payload.text.match(/\S+|"[^"]+"/g) || [];
+  var arr = cognate.replace(payload.text).match(/\S+|"[^"]+"/g) || [];
   // var arr = payload.text.match(/"[^"]*"|[^ ]+/g) || [];
   attachments[0].text = JSON.stringify(arr, null, 4)
 
