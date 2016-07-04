@@ -24,11 +24,20 @@ const handler = (payload, res) => {
 
     let taps = [1, 2];
     let beers = [];
-    taps.forEach((tap) => {
-      var r = yield col.find({tap: tap}).limit(1).sort({_id: -1});
-      assert.equal(1, r.length);
+
+    for (var i = 0; i < taps.length; i++) {
+      var r = yield col.find({tap: taps[i]}).limit(1).sort({_id: -1});
       beers.push(r);
-    })
+    }
+    // var r = yield col.find({tap: 1}).limit(1).sort({_id: -1});
+
+
+
+    // taps.forEach((tap) => {
+    //   var r = yield col.find({tap: tap}).limit(1).sort({_id: -1});
+    //   assert.equal(1, r.length);
+    //   beers.push(r);
+    // })
 
     // let beers = [
     //   {

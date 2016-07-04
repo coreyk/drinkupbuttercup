@@ -3,7 +3,6 @@
 
 const _ = require('lodash')
 const config = require('../config')
-// const trending = require('github-trending')
 const Botkit = require('botkit')
 
 var controller = Botkit.slackbot({})
