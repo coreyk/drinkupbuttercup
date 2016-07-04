@@ -33,7 +33,7 @@ co(function*() {
 
   console.log("Database connection ready");
 
-  db.listCollections().toArray(function(err, collections){
+  db.listCollections().toArray( (err, collections) => {
     console.log(collections);
   });
 
