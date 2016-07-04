@@ -69,6 +69,9 @@ let attachments = [{
 
 const handler = (payload, res) => {
   console.log(payload);
+
+  attachments[0].text = payload.text
+
   let msg = _.defaults({
     channel: payload.channel_name,
     attachments: attachments
