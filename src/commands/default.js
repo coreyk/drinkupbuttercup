@@ -16,7 +16,7 @@ const handler = (payload, res) => {
     var taps = [1, 2];
     var beers = [];
     taps.forEach((tap) => {
-      var beer = yield col.find({tap: tap}).limit(1).sort({_id: -1});
+      var beer = yield db.collection('beers').find({tap: tap}).limit(1).sort({_id: -1});
       assert.equal(1, beer.length);
       beers.push(beer);
     })
@@ -34,7 +34,7 @@ const handler = (payload, res) => {
   }).catch(function(err) {
     console.log(err.stack);
   });
-  
+
   let msg = _.defaults({
     channel: payload.channel_name,
     attachments: attachments
