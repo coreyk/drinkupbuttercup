@@ -16,10 +16,14 @@ const msgDefaults = {
 const handler = (payload, res) => {
   co(function*() {
     var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
+    console.log("Connected correctly to server");
+
+    var col = db.collection('beers');
+
     var taps = [1, 2];
     var beers = [];
     taps.forEach((tap) => {
-      var beer = yield db.collection('beers').find({tap: tap}).limit(1).sort({_id: -1});
+      var beer = yield col.find({tap: tap}).limit(1).sort({_id: -1});
       assert.equal(1, beer.length);
       beers.push(beer);
     })
