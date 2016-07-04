@@ -23,28 +23,29 @@ const handler = (payload, res) => {
     var col = db.collection('beers');
 
     var taps = [1, 2];
-    // var beers = [];
-    // taps.forEach((tap) => {
-    //   var beer = yield col.find({tap: tap}).limit(1).sort({_id: -1});
-    //   assert.equal(1, beer.length);
-    //   beers.push(beer);
-    // })
-    let beers = [
-      {
-        tap: 1,
-        name: 'Other Half All Citra Everything IPA',
-        url: 'http://www.beeradvocate.com/beer/profile/33510/220357/',
-        abv: 8.5,
-        size: 5
-      },
-      {
-        tap: 2,
-        name: 'Brooklyn Lager',
-        url: 'http://www.beeradvocate.com/beer/profile/45/148/',
-        abv: 5.2,
-        size: 5
-      }
-    ]
+    var beers = [];
+    taps.forEach((tap) => {
+      var beer = yield col.find({tap: tap}).limit(1).sort({_id: -1});
+      assert.equal(1, beer.length);
+      beers.push(beer);
+    })
+
+    // let beers = [
+    //   {
+    //     tap: 1,
+    //     name: 'Other Half All Citra Everything IPA',
+    //     url: 'http://www.beeradvocate.com/beer/profile/33510/220357/',
+    //     abv: 8.5,
+    //     size: 5
+    //   },
+    //   {
+    //     tap: 2,
+    //     name: 'Brooklyn Lager',
+    //     url: 'http://www.beeradvocate.com/beer/profile/45/148/',
+    //     abv: 5.2,
+    //     size: 5
+    //   }
+    // ]
 
     attachments = beers.map((beer) => {
       return {
