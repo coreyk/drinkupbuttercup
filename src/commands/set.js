@@ -5,8 +5,6 @@ const _ = require('lodash')
 const google = require('googleapis')
 const config = require('../config')
 
-//ex: mongodb://<dbuser>:<dbpassword>@ds123456.mlab.com:98765/heroku_hostname
-
 const msgDefaults = {
   response_type: 'in_channel',
   username: 'Drink Up!',
@@ -15,7 +13,7 @@ const msgDefaults = {
 
 var customsearch = google.customsearch('v1');
 
-var searchit = function(query, cb){
+var searchit = (query, cb) => {
   if (query) {
     customsearch.cse.list({ cx: config('GOOGLE_CSE_CX'), q: query, auth: config('GOOGLE_API_KEY') }, function (err, resp) {
       if (err) {
@@ -63,14 +61,11 @@ let beers = [
   }
 ]
 
-let attachments = beers.slice(0, 4).map((beer) => {
-  return {
-    title: `${beer.name}`,
-    title_link: `${beer.url}`,
-    text: `• ABV ${beer.abv}%  • Tap ${beer.tap}`,
-    mrkdwn_in: ['text', 'pretext']
-  }
-})
+let attachments = {
+  title: `setting things`,
+  text: `• ABV   • Tap `,
+  mrkdwn_in: ['text', 'pretext']
+}
 
 const handler = (payload, res) => {
   let msg = _.defaults({

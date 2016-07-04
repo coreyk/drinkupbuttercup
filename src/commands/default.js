@@ -2,7 +2,6 @@
 'use strict'
 
 const _ = require('lodash')
-const google = require('googleapis')
 const config = require('../config')
 
 google.resultsPerPage = 1
@@ -11,25 +10,6 @@ const msgDefaults = {
   response_type: 'in_channel',
   username: 'Drink Up!',
   icon_emoji: config('ICON_EMOJI')
-}
-
-var customsearch = google.customsearch('v1');
-
-var searchit = function(query, cb){
-  if (query) {
-    customsearch.cse.list({ cx: config('GOOGLE_CSE_CX'), q: query, auth: config('GOOGLE_API_KEY') }, function (err, resp) {
-      if (err) {
-        return console.log('An error occured', err);
-      }
-      // Got the response from custom search
-      console.log('Result: ' + resp.searchInformation.formattedTotalResults);
-      if (resp.items && resp.items.length > 0) {
-        console.log('First result name is ' + resp.items[0].title);
-      }
-      return resp.items[0].link
-      // process.nextTick(cb(resp.items[0]))
-    });
-  }
 }
 
 let beers = [
