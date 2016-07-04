@@ -24,6 +24,7 @@ var lookupLink = (query, cb) => {
       console.log('Result: ' + resp.searchInformation.formattedTotalResults);
       if (resp.items && resp.items.length > 0) {
         console.log('First result name is ' + resp.items[0].title);
+        console.log('First result link is ' + resp.items[0].link);
       }
       return resp.items[0].link
       // process.nextTick(cb(resp.items[0]))
@@ -79,29 +80,45 @@ const handler = (payload, res) => {
 
   var arr = parseString(cognate.replace(payload.text)) || [];
 
-  var link = lookupLink(arr[2]);
+  // var link = lookupLink(arr[2]);
 
-  var beer = [
-    {
-      tap: arr[1],
-      name: arr[2],
-      url: link || "",
-      abv: arr[3] || "",
-      size: arr[4] || 5
+  customsearch.cse.list({ cx: config('GOOGLE_CSE_CX'), q: arr[2], auth: config('GOOGLE_API_KEY') }, (err, resp) => {
+    if (err) {
+      return console.log('An error occured', err);
     }
-  ];
 
-  console.log(beer);
-  attachments[0].text = JSON.stringify(beer, null, 4)
+    console.log('Result: ' + resp.searchInformation.formattedTotalResults);
+    if (resp.items && resp.items.length > 0) {
+      console.log('First result name is ' + resp.items[0].title);
+      console.log('First result link is ' + resp.items[0].link);
+    }
+    // return resp.items[0].link
+    // process.nextTick(cb(resp.items[0]))
 
-  let msg = _.defaults({
-    channel: payload.channel_name,
-    attachments: attachments
-  }, msgDefaults)
+    var beer = [
+      {
+        tap: arr[1],
+        name: arr[2],
+        url: resp.items[0].link || "",
+        abv: arr[3] || "",
+        size: arr[4] || 5
+      }
+    ];
 
-  res.set('content-type', 'application/json')
-  res.status(200).json(msg)
-  return
+    console.log(beer);
+    attachments[0].text = JSON.stringify(beer, null, 4)
+
+    let msg = _.defaults({
+      channel: payload.channel_name,
+      attachments: attachments
+    }, msgDefaults)
+
+    res.set('content-type', 'application/json')
+    res.status(200).json(msg)
+    return
+  });
+
+
 }
 
 module.exports = { pattern: /set/ig, handler: handler }
