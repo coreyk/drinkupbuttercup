@@ -38,53 +38,54 @@ const handler = (payload, res) => {
 
     let attachments = [];
     var xray = Xray();
-    var abv;
+    var abvs = "";
 
     // xray(resp.items[0].link, 'div#ba-content div:nth-child(3) div:nth-child(1)')(function(err, text) {
     xray(resp.items[0].link, 'div#ba-content')(function(err, text) {
       var abvarr = text.match(/Alcohol by volume \(ABV\)\:(.*)%/);
       console.log(abvarr[1]);
-      abv = abvarr[1].toString();
+      abvs = abvarr[1].toString();
+
+      var beers = [];
+      beers[0] = {
+        tap: arr[1],
+        name: arr[2],
+        url: resp.items[0].link || "",
+        abv: abvs || arr[3],
+        size: arr[4] || 5
+      };
+
+      co(function*() {
+        var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
+        var r = yield db.collection('beers').insertOne(beers[0]);
+        assert.equal(1, r.insertedCount);
+        db.close();
+      }).catch(function(err) {
+        console.log(err.stack);
+      });
+
+      // console.log(beers[0]);
+      // attachments[0].text = JSON.stringify(beer, null, 4)
+      attachments = beers.map((beer) => {
+        return {
+          pretext: "Tapping keg...",
+          title: `${beer.name}`,
+          title_link: `${beer.url}`,
+          text: `• ABV ${beer.abv}%  • 🍺 #${beer.tap}`,
+          mrkdwn_in: ['text', 'pretext']
+        }
+      })
+
+      let msg = _.defaults({
+        channel: payload.channel_name,
+        attachments: attachments
+      }, msgDefaults)
+
+      res.set('content-type', 'application/json')
+      res.status(200).json(msg)
+      return
     })
 
-    var beers = [];
-    beers[0] = {
-      tap: arr[1],
-      name: arr[2],
-      url: resp.items[0].link || "",
-      abv: abv || arr[3],
-      size: arr[4] || 5
-    };
-
-    co(function*() {
-      var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
-      var r = yield db.collection('beers').insertOne(beers[0]);
-      assert.equal(1, r.insertedCount);
-      db.close();
-    }).catch(function(err) {
-      console.log(err.stack);
-    });
-
-    // console.log(beers[0]);
-    // attachments[0].text = JSON.stringify(beer, null, 4)
-    attachments = beers.map((beer) => {
-      return {
-        pretext: "Tapping keg...",
-        title: `${beer.name}`,
-        title_link: `${beer.url}`,
-        text: `• ABV ${beer.abv}%  • 🍺 #${beer.tap}`,
-        mrkdwn_in: ['text', 'pretext']
-      }
-    })
-
-    let msg = _.defaults({
-      channel: payload.channel_name,
-      attachments: attachments
-    }, msgDefaults)
-
-    res.set('content-type', 'application/json')
-    res.status(200).json(msg)
-    return
   });
 
 
