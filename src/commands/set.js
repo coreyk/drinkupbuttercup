@@ -2,6 +2,9 @@
 'use strict'
 
 const _ = require('lodash')
+const mongodb = require('mongodb')
+const co = require('co')
+const assert = require('assert')
 const google = require('googleapis')
 const cognate = require('cognate')
 const config = require('../config')
@@ -106,6 +109,7 @@ const handler = (payload, res) => {
     ];
 
     co(function*() {
+      // var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
       var r = yield db.collection('beers').insertOne(beer);
       assert.equal(1, r.insertedCount);
     }).catch(function(err) {
