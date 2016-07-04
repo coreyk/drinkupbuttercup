@@ -24,13 +24,15 @@
     "googleapis": "^2.1.7",
     "lodash": "^4.6.1",
     "mongodb": "^2.1.18",
-    "slack": "^6.1.0"
+    "slack": "^6.1.0",
+    "x-ray": "^2.3.0"
   },
   "keywords": [
     "slack",
     "slack-bot",
     "bot",
-    "heroku"
+    "heroku",
+    "beer"
   ],
   "license": "MIT",
   "engines": {
