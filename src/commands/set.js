@@ -31,6 +31,13 @@ var searchit = (query, cb) => {
   }
 }
 
+function parseString(str) {
+  var re = /(?:")([^"]+)(?:")|([^\s"]+)(?=\s+|$)/g;
+  var res=[], arr=null;
+  while (arr = re.exec(str)) { res.push(arr[1] ? arr[1] : arr[0]); }
+  return res;
+}
+
 let beers = [
   {
     tap: 1,
@@ -73,7 +80,8 @@ const handler = (payload, res) => {
 
   // attachments[0].text = payload.text
   //\S+|"[^"]+"
-  var arr = cognate.replace(payload.text).match(/\S+|"[^"]+"/g) || [];
+  var arr = parseString(cognate.replace(payload.text)) || [];
+  // var arr = cognate.replace(payload.text).match(/\S+|"[^"]+"/g) || [];
   // var arr = payload.text.match(/"[^"]*"|[^ ]+/g) || [];
 
   console.log(arr);
