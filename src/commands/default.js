@@ -5,6 +5,7 @@ const _ = require('lodash')
 const mongodb = require('mongodb')
 const co = require('co')
 const assert = require('assert')
+const toUnicode = require('to-unicode')
 const config = require('../config')
 
 const msgDefaults = {
@@ -14,6 +15,7 @@ const msgDefaults = {
 }
 
 const handler = (payload, res) => {
+
   let attachments = []
 
   co(function*() {
@@ -35,7 +37,7 @@ const handler = (payload, res) => {
       return {
         title: `${beer.name}`,
         title_link: `${beer.url}`,
-        text: `🍺⃣② #${beer.tap1️} • ABV ${beer.abv}% `,
+        text: `🍺 ${toUnicode(beer.tap, 'circledNeg')} • ABV ${beer.abv}% `,
         mrkdwn_in: ['text', 'pretext']
       }
     })
