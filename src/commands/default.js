@@ -10,47 +10,31 @@ const msgDefaults = {
   icon_emoji: config('ICON_EMOJI')
 }
 
-let beers = [
-  {
-    tap: 1,
-    name: 'Other Half All Citra Everything IPA',
-    url: 'http://www.beeradvocate.com/beer/profile/33510/220357/',
-    abv: 8.5,
-    size: 5
-  },
-  {
-    tap: 2,
-    name: 'Brooklyn Lager',
-    url: 'http://www.beeradvocate.com/beer/profile/45/148/',
-    abv: 5.2,
-    size: 5
-  },
-  {
-    tap: 3,
-    name: 'Other Half Magic Green Nuggets IPA',
-    url: '',
-    abv: 9.3,
-    size: 5
-  },
-  {
-    tap: 4,
-    name: 'Allagash White',
-    url: 'http://www.beeradvocate.com/beer/profile/4/59/',
-    abv: 5.1,
-    size: 5
-  }
-]
-
-let attachments = beers.slice(0, 4).map((beer) => {
-  return {
-    title: `${beer.name}`,
-    title_link: `${beer.url}`,
-    text: `• ABV ${beer.abv}%  • Tap ${beer.tap}`,
-    mrkdwn_in: ['text', 'pretext']
-  }
-})
-
 const handler = (payload, res) => {
+  co(function*() {
+    var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
+    var taps = [1, 2];
+    var beers = [];
+    taps.forEach((tap) => {
+      var beer = yield col.find({tap: tap}).limit(1).sort({_id: -1});
+      assert.equal(1, beer.length);
+      beers.push(beer);
+    })
+
+    let attachments = beers.map((beer) => {
+      return {
+        title: `${beer.name}`,
+        title_link: `${beer.url}`,
+        text: `• ABV ${beer.abv}%  • Tap ${beer.tap}`,
+        mrkdwn_in: ['text', 'pretext']
+      }
+    })
+
+    db.close();
+  }).catch(function(err) {
+    console.log(err.stack);
+  });
+  
   let msg = _.defaults({
     channel: payload.channel_name,
     attachments: attachments
