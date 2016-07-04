@@ -4,8 +4,6 @@
 const _ = require('lodash')
 const config = require('../config')
 
-google.resultsPerPage = 1
-
 const msgDefaults = {
   response_type: 'in_channel',
   username: 'Drink Up!',
