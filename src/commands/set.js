@@ -105,6 +105,13 @@ const handler = (payload, res) => {
       }
     ];
 
+    co(function*() {
+      var r = yield db.collection('beers').insertOne(beer);
+      assert.equal(1, r.insertedCount);
+    }).catch(function(err) {
+      console.log(err.stack);
+    });
+
     console.log(beer);
     attachments[0].text = JSON.stringify(beer, null, 4)
 
