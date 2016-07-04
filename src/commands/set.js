@@ -61,11 +61,11 @@ let beers = [
   }
 ]
 
-let attachments = {
+let attachments = [{
   title: `setting things`,
   text: `• ABV   • Tap `,
   mrkdwn_in: ['text', 'pretext']
-}
+}]
 
 const handler = (payload, res) => {
   let msg = _.defaults({
