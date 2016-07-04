@@ -2,6 +2,9 @@
 'use strict'
 
 const _ = require('lodash')
+const mongodb = require('mongodb')
+const co = require('co')
+const assert = require('assert')
 const config = require('../config')
 
 const msgDefaults = {
