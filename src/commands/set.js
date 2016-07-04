@@ -112,7 +112,7 @@ const handler = (payload, res) => {
       return {
         title: `${beer.name}`,
         title_link: `${beer.url}`,
-        text: `• ABV ${beer.abv}%  • Tap ${beer.tap}`,
+        text: `• ABV ${beer.abv}%  • 🍺 #${beer.tap}`,
         mrkdwn_in: ['text', 'pretext']
       }
     })
