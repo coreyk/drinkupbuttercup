@@ -98,15 +98,14 @@ const handler = (payload, res) => {
     // return resp.items[0].link
     // process.nextTick(cb(resp.items[0]))
 
-    var beer = [
+    var beer =
       {
         tap: arr[1],
         name: arr[2],
         url: resp.items[0].link || "",
         abv: arr[3] || "",
         size: arr[4] || 5
-      }
-    ];
+      };
 
     co(function*() {
       var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
