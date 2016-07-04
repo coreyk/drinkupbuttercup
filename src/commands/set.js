@@ -69,12 +69,14 @@ let attachments = [{
 }]
 
 const handler = (payload, res) => {
-  console.log(payload);
+  // console.log(payload);
 
   // attachments[0].text = payload.text
   //\S+|"[^"]+"
   var arr = cognate.replace(payload.text).match(/\S+|"[^"]+"/g) || [];
   // var arr = payload.text.match(/"[^"]*"|[^ ]+/g) || [];
+
+  console.log(arr);
   attachments[0].text = JSON.stringify(arr, null, 4)
 
   let msg = _.defaults({
