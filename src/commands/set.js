@@ -36,6 +36,7 @@ const handler = (payload, res) => {
       return console.log('An error occured', err);
     }
 
+    let attachments = [];
     var xray = Xray();
     var abv;
 
