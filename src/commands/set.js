@@ -109,9 +109,10 @@ const handler = (payload, res) => {
     ];
 
     co(function*() {
-      // var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
+      var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
       var r = yield db.collection('beers').insertOne(beer);
       assert.equal(1, r.insertedCount);
+      db.close();
     }).catch(function(err) {
       console.log(err.stack);
     });
