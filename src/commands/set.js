@@ -83,41 +83,39 @@ const handler = (payload, res) => {
 
   var arr = parseString(cognate.replace(payload.text)) || [];
 
-  // var link = lookupLink(arr[2]);
-
   customsearch.cse.list({ cx: config('GOOGLE_CSE_CX'), q: arr[2], auth: config('GOOGLE_API_KEY') }, (err, resp) => {
     if (err) {
       return console.log('An error occured', err);
     }
 
-    console.log('Result: ' + resp.searchInformation.formattedTotalResults);
-    if (resp.items && resp.items.length > 0) {
-      console.log('First result name is ' + resp.items[0].title);
-      console.log('First result link is ' + resp.items[0].link);
-    }
-    // return resp.items[0].link
-    // process.nextTick(cb(resp.items[0]))
-
-    var beer =
-      {
-        tap: arr[1],
-        name: arr[2],
-        url: resp.items[0].link || "",
-        abv: arr[3] || "",
-        size: arr[4] || 5
-      };
+    var beers = [];
+    beers[0] = {
+      tap: arr[1],
+      name: arr[2],
+      url: resp.items[0].link || "",
+      abv: arr[3] || "",
+      size: arr[4] || 5
+    };
 
     co(function*() {
       var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
-      var r = yield db.collection('beers').insertOne(beer);
+      var r = yield db.collection('beers').insertOne(beers[0]);
       assert.equal(1, r.insertedCount);
       db.close();
     }).catch(function(err) {
       console.log(err.stack);
     });
 
-    console.log(beer);
-    attachments[0].text = JSON.stringify(beer, null, 4)
+    // console.log(beers[0]);
+    // attachments[0].text = JSON.stringify(beer, null, 4)
+    attachments = beers.map((beer) => {
+      return {
+        title: `${beer.name}`,
+        title_link: `${beer.url}`,
+        text: `• ABV ${beer.abv}%  • Tap ${beer.tap}`,
+        mrkdwn_in: ['text', 'pretext']
+      }
+    })
 
     let msg = _.defaults({
       channel: payload.channel_name,
