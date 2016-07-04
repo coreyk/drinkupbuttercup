@@ -93,7 +93,7 @@ const handler = (payload, res) => {
       tap: arr[1],
       name: arr[2],
       url: resp.items[0].link || "",
-      abv: arr[3] || "",
+      abv: arr[3] || "n/a",
       size: arr[4] || 5
     };
 
