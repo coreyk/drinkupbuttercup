@@ -38,26 +38,24 @@ const handler = (payload, res) => {
 
     let attachments = [];
     var xray = Xray();
-    var abvs = "", style = "";
+    var htmlsrc = "";
 // #ba-content > div:nth-child(5)  #ba-content > div:nth-child(5) > div:nth-child(2) > b:nth-child(14)
     // xray(resp.items[0].link, 'div#ba-content div:nth-child(3)')(function(err, text) {
     xray(resp.items[0].link, '#ba-content > div:nth-child(5)')(function(err, src) {
-      var htmlsrc = src;
+      htmlsrc = src;
       var abvarr = htmlsrc.match(/Alcohol by volume \(ABV\)\:(.*)%/);
       var stylearr = htmlsrc.match(/Style\:(.*)[\n\r]/);
       console.log(htmlsrc);
       console.log(abvarr[1]);
       console.log(stylearr[1]);
-      abvs = abvarr[1].toString();
-      style = stylearr[1].toString();
 
       var beers = [];
       beers[0] = {
         tap: arr[1],
         name: arr[2],
         url: resp.items[0].link || "",
-        abv: abvs || arr[3],
-        style: style || arr[4],
+        abv: abvarr[1] || arr[3],
+        style: stylearr[1] || arr[4],
         size: arr[5] || 5
       };
 
