@@ -80,7 +80,7 @@ const handler = (payload, res) => {
             title: `${beer.name}`,
             title_link: `${beer.url}`,
             color: '#2FA44F',
-            text: `${toUnicode(beer.tap, 'circled')}  ABV ${beer.abv}%  •  ${beer.style}\n  •  BA Score✨: ${beer.score}/100  •  🍺`,
+            text: `${toUnicode(beer.tap, 'circled')}  ABV ${beer.abv}%  •  ${beer.style}\n  •  BA Score✨ ${beer.score}/100  •  🍺`,
             mrkdwn_in: ['text', 'pretext']
           }
         })
