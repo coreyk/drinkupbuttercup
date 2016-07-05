@@ -77,6 +77,8 @@ const handler = (payload, res) => {
         attachments = beers.map((beer) => {
           return {
             pretext: "Tapping keg...",
+            author_name: username,
+            author_icon: icon_emoji,
             title: `${beer.name}`,
             title_link: `${beer.url}`,
             text: `🍺 ${toUnicode(beer.tap, 'circled')} • ABV ${beer.abv}%  •  ${beer.style}`,

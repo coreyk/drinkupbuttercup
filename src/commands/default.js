@@ -38,8 +38,11 @@ const handler = (payload, res) => {
 
     attachments = beers.map((beer) => {
       return {
+        author_name: username,
+        author_icon: icon_emoji,
         title: `${beer.name}`,
         title_link: `${beer.url}`,
+        color: '#2FA44F',
         text: `🍺 ${toUnicode(beer.tap, 'circled')} • ABV ${beer.abv}%  •  ${beer.style}`,
         mrkdwn_in: ['text', 'pretext']
       }
