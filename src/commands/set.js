@@ -39,9 +39,9 @@ const handler = (payload, res) => {
     let attachments = [];
     var xray = Xray();
     var abvs = "", style = "";
-
-    // xray(resp.items[0].link, 'div#ba-content div:nth-child(3) div:nth-child(1)')(function(err, text) {
-    xray(resp.items[0].link, 'div#ba-content')(function(err, src) {
+// #ba-content > div:nth-child(5)  #ba-content > div:nth-child(5) > div:nth-child(2) > b:nth-child(14)
+    // xray(resp.items[0].link, 'div#ba-content div:nth-child(3)')(function(err, text) {
+    xray(resp.items[0].link, '#ba-content > div:nth-child(5)')(function(err, src) {
       var abvarr = src.match(/Alcohol by volume \(ABV\)\:(.*)%/);
       // var stylearr = src.match(/Style\:(.*)Alcohol/);
       console.log(src);
