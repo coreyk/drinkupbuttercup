@@ -17,5 +17,5 @@ exports.daysBetween = (date1, date2) => {
 }
 
 exports.daysOnTap = (date) => {
-  return exports.daysBetween(exports.dateFromObjectId(date.toString()), Date.now().toString())
+  return exports.daysBetween(exports.dateFromObjectId(date), Date.now());
 }
