@@ -53,7 +53,7 @@ const handler = (payload, res) => {
         console.log(htmlsrc);
         var abvarr = htmlsrc[0].match(/Alcohol by volume \(ABV\)\:(.*)%/);
         var stylearr = htmlsrc[0].match(/Style\:(.*)[\n\r]/);
-        var bascorearr = htmlsrc[0].match(/BA SCORE\s+(\d{2,3})[\n\r\t]/));
+        var bascorearr = htmlsrc[0].match(/BA SCORE\s+(\d{2,3})[\n\r\t]/);
         console.log("BA SCORE:", bascorearr[1]);
 
         var beers = [];
