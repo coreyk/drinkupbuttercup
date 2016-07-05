@@ -44,7 +44,6 @@ const handler = (payload, res) => {
     xray(resp.items[0].link, 'div#ba-content')(function(err, src) {
       var abvarr = src.match(/Alcohol by volume \(ABV\)\:(.*)%/);
       // var stylearr = src.match(/Style\:(.*)Alcohol/);
-
       console.log(src);
       console.log(abvarr[1]);
       // console.log(stylearr[1]);
