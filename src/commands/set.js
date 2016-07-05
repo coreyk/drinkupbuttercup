@@ -76,7 +76,7 @@ const handler = (payload, res) => {
           pretext: "Tapping keg...",
           title: `${beer.name}`,
           title_link: `${beer.url}`,
-          text: `• ABV ${beer.abv}%  • 🍺 #${beer.tap}`,
+          text: `🍺 ${toUnicode(beer.tap, 'circled')} • ABV ${beer.abv}% • Style: ${beer.style}`,
           mrkdwn_in: ['text', 'pretext']
         }
       })
