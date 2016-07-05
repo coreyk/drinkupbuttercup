@@ -109,5 +109,5 @@ app.get('/thirsty', (req, res) => {
     res.set('content-type', 'application/json')
     res.status(200).json(beers)
     // res.send('\n 👋 🌍 \n')
-  }
+  })
 })
