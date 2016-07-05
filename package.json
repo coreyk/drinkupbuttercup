@@ -10,8 +10,8 @@
     "test": "standard"
   },
   "author": {
-    "email": "ckaiser@beenverified.com",
-    "name": "ckaiser"
+    "email": "info@coreykaiser.com",
+    "name": "coreyk"
   },
   "dependencies": {
     "body-parser": "^1.15.0",
@@ -37,6 +37,6 @@
   ],
   "license": "MIT",
   "engines": {
-    "node": "5.7.1"
+    "node": "6.2.2"
   }
 }
