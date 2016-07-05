@@ -9,6 +9,7 @@ const google = require('googleapis')
 const cognate = require('cognate')
 const Xray = require('x-ray')
 const scraperjs = require('scraperjs')
+const toUnicode = require('to-unicode')
 const config = require('../config')
 
 const msgDefaults = {
