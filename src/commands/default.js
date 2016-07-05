@@ -9,13 +9,13 @@ const helpers = require('../helpers/helpers')
 const config = require('../config')
 
 var msgDefaults = {
-  response_type: 'in_channel',
+  response_type: 'ephemeral',
   username: 'Drink Up!',
   icon_emoji: config('ICON_EMOJI')
 }
 
 const handler = (payload, res) => {
-  msgDefaults.response_type = payload.text.indexOf('me') !== -1 ? 'ephemeral' : 'in_channel';
+  msgDefaults.response_type = payload.text.indexOf('all') !== -1 ? 'in_channel' : 'ephemeral';
 
   let attachments = []
 
