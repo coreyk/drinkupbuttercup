@@ -50,6 +50,7 @@ const handler = (payload, res) => {
         }).get();
       })
       .then(function(htmlsrc) {
+        console.log(htmlsrc);
         var abvarr = htmlsrc[0].match(/Alcohol by volume \(ABV\)\:(.*)%/);
         var stylearr = htmlsrc[0].match(/Style\:(.*)[\n\r]/);
 
