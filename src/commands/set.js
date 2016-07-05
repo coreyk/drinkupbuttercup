@@ -52,9 +52,6 @@ const handler = (payload, res) => {
       .then(function(htmlsrc) {
         var abvarr = htmlsrc[0].match(/Alcohol by volume \(ABV\)\:(.*)%/);
         var stylearr = htmlsrc[0].match(/Style\:(.*)[\n\r]/);
-        console.log(htmlsrc);
-        console.log(abvarr[1]);
-        console.log(stylearr[1]);
 
         var beers = [];
         beers[0] = {

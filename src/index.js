@@ -77,5 +77,37 @@ app.post('/commands/beer', (req, res) => {
 })
 
 app.get('/thirsty', (req, res) => {
-  res.send('\n 👋 🌍 \n')
+  co(function*() {
+    var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
+    console.log("Connected correctly to server");
+
+    let col = db.collection('beers');
+
+    let taps = [1, 2, 3, 4];
+    let beers = [];
+
+    for (var i = 0; i < taps.length; i++) {
+      var r = yield col.find({
+        tap: taps[i].toString()
+      }).limit(1).sort({
+        _id: -1
+      }).toArray();
+      console.log(r);
+      beers.push(r[0]);
+    }
+
+    attachments = beers.map((beer) => {
+      return {
+        title: `${beer.name}`,
+        title_link: `${beer.url}`,
+        text: `🍺 ${toUnicode(beer.tap, 'circled')} • ABV ${beer.abv}%  •  ${beer.style}`,
+        mrkdwn_in: ['text', 'pretext']
+      }
+    })
+
+    db.close();
+    res.set('content-type', 'application/json')
+    res.status(200).json(beers)
+    // res.send('\n 👋 🌍 \n')
+  }
 })
