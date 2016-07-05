@@ -106,7 +106,7 @@ app.get('/thirsty', (req, res) => {
     })
 
     db.close();
-    res.set('content-type', 'application/json')
+    // res.set('content-type', 'application/json')
     // res.status(200).json(beers)
     res.send(JSON.stringify(beers));
   })
