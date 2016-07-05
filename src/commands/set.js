@@ -42,9 +42,10 @@ const handler = (payload, res) => {
 // #ba-content > div:nth-child(5)  #ba-content > div:nth-child(5) > div:nth-child(2) > b:nth-child(14)
     // xray(resp.items[0].link, 'div#ba-content div:nth-child(3)')(function(err, text) {
     xray(resp.items[0].link, '#ba-content > div:nth-child(5)')(function(err, src) {
-      var abvarr = src.match(/Alcohol by volume \(ABV\)\:(.*)%/);
-      var stylearr = src.match(/Style\:(.*)[\n\r]/);
-      console.log(src);
+      var htmlsrc = src;
+      var abvarr = htmlsrc.match(/Alcohol by volume \(ABV\)\:(.*)%/);
+      var stylearr = htmlsrc.match(/Style\:(.*)[\n\r]/);
+      console.log(htmlsrc);
       console.log(abvarr[1]);
       console.log(stylearr[1]);
       abvs = abvarr[1].toString();
@@ -76,7 +77,7 @@ const handler = (payload, res) => {
           pretext: "Tapping keg...",
           title: `${beer.name}`,
           title_link: `${beer.url}`,
-          text: `🍺 ${toUnicode(beer.tap, 'circled')} • ABV ${beer.abv}%  • Style: ${beer.style}`,
+          text: `🍺 ${toUnicode(beer.tap, 'circled')} • ABV ${beer.abv}%  •  ${beer.style}`,
           mrkdwn_in: ['text', 'pretext']
         }
       })
