@@ -96,15 +96,6 @@ app.get('/thirsty', (req, res) => {
       beers.push(r[0]);
     }
 
-    attachments = beers.map((beer) => {
-      return {
-        title: `${beer.name}`,
-        title_link: `${beer.url}`,
-        text: `🍺 ${toUnicode(beer.tap, 'circled')} • ABV ${beer.abv}%  •  ${beer.style}`,
-        mrkdwn_in: ['text', 'pretext']
-      }
-    })
-
     db.close();
     // res.set('content-type', 'application/json')
     // res.status(200).json(beers)
