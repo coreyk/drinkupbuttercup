@@ -46,11 +46,11 @@ const handler = (payload, res) => {
     		}).get();
     	})
     	.then(function(htmlsrc) {
-        var abvarr = htmlsrc.match(/Alcohol by volume \(ABV\)\:(.*)%/);
-        var stylearr = htmlsrc.match(/Style\:(.*)[\n\r]/);
+        // var abvarr = htmlsrc.match(/Alcohol by volume \(ABV\)\:(.*)%/);
+        // var stylearr = htmlsrc.match(/Style\:(.*)[\n\r]/);
         console.log(htmlsrc);
-        console.log(abvarr[1]);
-        console.log(stylearr[1]);
+        // console.log(abvarr[1]);
+        // console.log(stylearr[1]);
 
         var beers = [];
         beers[0] = {
