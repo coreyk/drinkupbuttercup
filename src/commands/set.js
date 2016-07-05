@@ -43,13 +43,13 @@ const handler = (payload, res) => {
     // xray(resp.items[0].link, 'div#ba-content div:nth-child(3) div:nth-child(1)')(function(err, text) {
     xray(resp.items[0].link, 'div#ba-content')(function(err, src) {
       var abvarr = src.match(/Alcohol by volume \(ABV\)\:(.*)%/);
-      var stylearr = src.match(/Style\:(.*)Alcohol/);
+      // var stylearr = src.match(/Style\:(.*)Alcohol/);
 
       console.log(src);
       console.log(abvarr[1]);
-      console.log(stylearr[1]);
+      // console.log(stylearr[1]);
       abvs = abvarr[1].toString();
-      style = stylearr[1].toString();
+      // style = stylearr[1].toString();
 
       var beers = [];
       beers[0] = {
@@ -57,7 +57,7 @@ const handler = (payload, res) => {
         name: arr[2],
         url: resp.items[0].link || "",
         abv: abvs || arr[3],
-        style: style || arr[4],
+        // style: style || arr[4],
         size: arr[5] || 5
       };
 
