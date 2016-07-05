@@ -58,8 +58,8 @@ const handler = (payload, res) => {
           tap: arr[1],
           name: arr[2],
           url: resp.items[0].link || "",
-          abv: abvarr[1] || arr[3],
-          style: stylearr[1] || arr[4],
+          abv: abvarr[1].trim() || arr[3],
+          style: stylearr[1].trim() || arr[4],
           size: arr[5] || 5
         };
 
