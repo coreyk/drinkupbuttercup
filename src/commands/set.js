@@ -8,6 +8,7 @@ const assert = require('assert')
 const google = require('googleapis')
 const cognate = require('cognate')
 const Xray = require('x-ray')
+const scraperjs = require('scraperjs')
 const config = require('../config')
 
 const msgDefaults = {
@@ -37,58 +38,71 @@ const handler = (payload, res) => {
     }
 
     let attachments = [];
-    var xray = Xray();
-    var htmlsrc = "";
-// #ba-content > div:nth-child(5)  #ba-content > div:nth-child(5) > div:nth-child(2) > b:nth-child(14)
-    // xray(resp.items[0].link, 'div#ba-content div:nth-child(3)')(function(err, text) {
-    xray(resp.items[0].link, '#ba-content > div:nth-child(5)')(function(err, src) {
-      htmlsrc = src;
-      var abvarr = htmlsrc.match(/Alcohol by volume \(ABV\)\:(.*)%/);
-      var stylearr = htmlsrc.match(/Style\:(.*)[\n\r]/);
-      console.log(htmlsrc);
-      console.log(abvarr[1]);
-      console.log(stylearr[1]);
 
-      var beers = [];
-      beers[0] = {
-        tap: arr[1],
-        name: arr[2],
-        url: resp.items[0].link || "",
-        abv: abvarr[1] || arr[3],
-        style: stylearr[1] || arr[4],
-        size: arr[5] || 5
-      };
+    scraperjs.StaticScraper.create(resp.items[0].link)
+    	.scrape(function($) {
+    		return $("#ba-content > div:nth-child(5)").map(function() {
+    			return $(this).text();
+    		}).get();
+    	})
+    	.then(function(htmlsrc) {
+        var abvarr = htmlsrc.match(/Alcohol by volume \(ABV\)\:(.*)%/);
+        var stylearr = htmlsrc.match(/Style\:(.*)[\n\r]/);
+        console.log(htmlsrc);
+        console.log(abvarr[1]);
+        console.log(stylearr[1]);
 
-      co(function*() {
-        var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
-        var r = yield db.collection('beers').insertOne(beers[0]);
-        assert.equal(1, r.insertedCount);
-        db.close();
-      }).catch(function(err) {
-        console.log(err.stack);
-      });
+        var beers = [];
+        beers[0] = {
+          tap: arr[1],
+          name: arr[2],
+          url: resp.items[0].link || "",
+          abv: abvarr[1] || arr[3],
+          style: stylearr[1] || arr[4],
+          size: arr[5] || 5
+        };
 
-      // console.log(beers[0]);
-      // attachments[0].text = JSON.stringify(beer, null, 4)
-      attachments = beers.map((beer) => {
-        return {
-          pretext: "Tapping keg...",
-          title: `${beer.name}`,
-          title_link: `${beer.url}`,
-          text: `🍺 ${toUnicode(beer.tap, 'circled')} • ABV ${beer.abv}%  •  ${beer.style}`,
-          mrkdwn_in: ['text', 'pretext']
-        }
-      })
+        co(function*() {
+          var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
+          var r = yield db.collection('beers').insertOne(beers[0]);
+          assert.equal(1, r.insertedCount);
+          db.close();
+        }).catch(function(err) {
+          console.log(err.stack);
+        });
 
-      let msg = _.defaults({
-        channel: payload.channel_name,
-        attachments: attachments
-      }, msgDefaults)
+        // console.log(beers[0]);
+        // attachments[0].text = JSON.stringify(beer, null, 4)
+        attachments = beers.map((beer) => {
+          return {
+            pretext: "Tapping keg...",
+            title: `${beer.name}`,
+            title_link: `${beer.url}`,
+            text: `🍺 ${toUnicode(beer.tap, 'circled')} • ABV ${beer.abv}%  •  ${beer.style}`,
+            mrkdwn_in: ['text', 'pretext']
+          }
+        })
 
-      res.set('content-type', 'application/json')
-      res.status(200).json(msg)
-      return
-    })
+        let msg = _.defaults({
+          channel: payload.channel_name,
+          attachments: attachments
+        }, msgDefaults)
+
+        res.set('content-type', 'application/json')
+        res.status(200).json(msg)
+        return
+    	})
+
+    // var xray = Xray();
+    // var htmlsrc = "";
+
+    // xray(resp.items[0].link, '#ba-content > div:nth-child(5)')((err, src) => {
+    //   if (err) {
+    //     return console.log('x-ray error occured', err);
+    //   }
+    //   htmlsrc = src;
+    //
+    // })
 
   });
 
