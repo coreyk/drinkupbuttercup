@@ -7,13 +7,14 @@ const assert = require('assert')
 const toUnicode = require('to-unicode')
 const config = require('../config')
 
-const msgDefaults = {
-  response_type: payload.text.indexOf('me') !== -1 ? 'ephemeral' : 'in_channel',
+var msgDefaults = {
+  response_type: 'in_channel',
   username: 'Drink Up!',
   icon_emoji: config('ICON_EMOJI')
 }
 
 const handler = (payload, res) => {
+  msgDefaults.response_type = payload.text.indexOf('me') !== -1 ? 'ephemeral' : 'in_channel';
 
   let attachments = []
 
