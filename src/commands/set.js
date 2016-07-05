@@ -11,7 +11,7 @@ const toUnicode = require('to-unicode')
 const config = require('../config')
 
 const msgDefaults = {
-  response_type: 'in_channel',
+  response_type: 'ephemeral',
   username: 'Drink Up!',
   icon_emoji: config('ICON_EMOJI')
 }
@@ -79,6 +79,7 @@ const handler = (payload, res) => {
             pretext: "Tapping keg...",
             title: `${beer.name}`,
             title_link: `${beer.url}`,
+            color: '#2FA44F',
             text: `🍺 ${toUnicode(beer.tap, 'circled')} • ABV ${beer.abv}%  •  ${beer.style}`,
             mrkdwn_in: ['text', 'pretext']
           }
