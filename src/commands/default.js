@@ -43,7 +43,7 @@ const handler = (payload, res) => {
         title: `${beer.name}`,
         title_link: `${beer.url}`,
         color: '#fdd350',
-        text: `🍺 ${toUnicode(beer.tap, 'circled')} • ABV ${beer.abv}%  •  ${beer.style}\n  •  Ba Score✨: ${beer.score}/100  •  Days on tap: ${helpers.daysOnTap(beer._id.toString())}`,
+        text: `🍺 ${toUnicode(beer.tap, 'circled')} • ABV ${beer.abv}%  •  ${beer.style}\n&nbsp;&nbsp;&nbsp;  •  Ba Score✨: ${beer.score}/100  •  Days on tap: ${helpers.daysOnTap(beer._id.toString())}`,
         mrkdwn_in: ['text', 'pretext']
       }
     })
