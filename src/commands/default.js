@@ -1,4 +1,3 @@
-
 'use strict'
 
 const _ = require('lodash')
@@ -28,7 +27,11 @@ const handler = (payload, res) => {
     let beers = [];
 
     for (var i = 0; i < taps.length; i++) {
-      var r = yield col.find({tap: taps[i].toString()}).limit(1).sort({_id: -1}).toArray();
+      var r = yield col.find({
+        tap: taps[i].toString()
+      }).limit(1).sort({
+        _id: -1
+      }).toArray();
       console.log(r);
       beers.push(r[0]);
     }
@@ -58,4 +61,7 @@ const handler = (payload, res) => {
   });
 }
 
-module.exports = { pattern: /info/ig, handler: handler }
+module.exports = {
+  pattern: /info/ig,
+  handler: handler
+}

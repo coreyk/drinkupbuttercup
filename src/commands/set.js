@@ -1,4 +1,3 @@
-
 'use strict'
 
 const _ = require('lodash')
@@ -7,7 +6,6 @@ const co = require('co')
 const assert = require('assert')
 const google = require('googleapis')
 const cognate = require('cognate')
-const Xray = require('x-ray')
 const scraperjs = require('scraperjs')
 const toUnicode = require('to-unicode')
 const config = require('../config')
@@ -22,18 +20,23 @@ var customsearch = google.customsearch('v1');
 
 function parseString(str) {
   var re = /(?:")([^"]+)(?:")|([^\s"]+)(?=\s+|$)/g;
-  var res=[], arr=null;
-  while (arr = re.exec(str)) { res.push(arr[1] ? arr[1] : arr[0]); }
+  var res = [],
+    arr = null;
+  while (arr = re.exec(str)) {
+    res.push(arr[1] ? arr[1] : arr[0]);
+  }
   return res;
 }
-
-
 
 const handler = (payload, res) => {
 
   var arr = parseString(cognate.replace(payload.text)) || [];
 
-  customsearch.cse.list({ cx: config('GOOGLE_CSE_CX'), q: arr[2], auth: config('GOOGLE_API_KEY') }, (err, resp) => {
+  customsearch.cse.list({
+    cx: config('GOOGLE_CSE_CX'),
+    q: arr[2],
+    auth: config('GOOGLE_API_KEY')
+  }, (err, resp) => {
     if (err) {
       return console.log('An error occured', err);
     }
@@ -41,12 +44,12 @@ const handler = (payload, res) => {
     let attachments = [];
 
     scraperjs.StaticScraper.create(resp.items[0].link)
-    	.scrape(function($) {
-    		return $("#ba-content > div:nth-child(5)").map(function() {
-    			return $(this).text();
-    		}).get();
-    	})
-    	.then(function(htmlsrc) {
+      .scrape(function($) {
+        return $("#ba-content > div:nth-child(5)").map(function() {
+          return $(this).text();
+        }).get();
+      })
+      .then(function(htmlsrc) {
         var abvarr = htmlsrc[0].match(/Alcohol by volume \(ABV\)\:(.*)%/);
         var stylearr = htmlsrc[0].match(/Style\:(.*)[\n\r]/);
         console.log(htmlsrc);
@@ -92,22 +95,12 @@ const handler = (payload, res) => {
         res.set('content-type', 'application/json')
         res.status(200).json(msg)
         return
-    	})
-
-    // var xray = Xray();
-    // var htmlsrc = "";
-
-    // xray(resp.items[0].link, '#ba-content > div:nth-child(5)')((err, src) => {
-    //   if (err) {
-    //     return console.log('x-ray error occured', err);
-    //   }
-    //   htmlsrc = src;
-    //
-    // })
+      })
 
   });
-
-
 }
 
-module.exports = { pattern: /set/ig, handler: handler }
+module.exports = {
+  pattern: /set/ig,
+  handler: handler
+}
