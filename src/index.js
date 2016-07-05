@@ -92,7 +92,7 @@ app.get('/thirsty', (req, res) => {
       }).limit(1).sort({
         _id: -1
       }).toArray();
-      console.log(r);
+      assert.equal(1, r.length);
       beers.push(r[0]);
     }
 
@@ -109,5 +109,7 @@ app.get('/thirsty', (req, res) => {
     // res.set('content-type', 'application/json')
     // res.status(200).json(beers)
     res.send(JSON.stringify(beers));
-  })
+  }).catch(function(err) {
+    console.log(err.stack);
+  });
 })

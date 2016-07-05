@@ -32,7 +32,7 @@ const handler = (payload, res) => {
       }).limit(1).sort({
         _id: -1
       }).toArray();
-      console.log(r);
+      assert.equal(1, r.length);
       beers.push(r[0]);
     }
 
