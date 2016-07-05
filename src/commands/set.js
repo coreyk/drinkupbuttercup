@@ -50,11 +50,9 @@ const handler = (payload, res) => {
         }).get();
       })
       .then(function(htmlsrc) {
-        console.log(htmlsrc);
         var abvarr = htmlsrc[0].match(/Alcohol by volume \(ABV\)\:(.*)%/);
         var stylearr = htmlsrc[0].match(/Style\:(.*)[\n\r]/);
         var bascorearr = htmlsrc[0].match(/BA SCORE\s+(\d{2,3})[\n\r\t]/);
-        console.log("BA SCORE:", bascorearr[1]);
 
         var beers = [];
         beers[0] = {
@@ -76,8 +74,6 @@ const handler = (payload, res) => {
           console.log(err.stack);
         });
 
-        // console.log(beers[0]);
-        // attachments[0].text = JSON.stringify(beer, null, 4)
         attachments = beers.map((beer) => {
           return {
             pretext: "Tapping keg...",
