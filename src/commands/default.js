@@ -5,6 +5,7 @@ const mongodb = require('mongodb')
 const co = require('co')
 const assert = require('assert')
 const toUnicode = require('to-unicode')
+const helpers = require('../helpers/helpers')
 const config = require('../config')
 
 var msgDefaults = {
@@ -42,7 +43,7 @@ const handler = (payload, res) => {
         title: `${beer.name}`,
         title_link: `${beer.url}`,
         color: '#fdd350',
-        text: `🍺 ${toUnicode(beer.tap, 'circled')} • ABV ${beer.abv}%  •  ${beer.style}`,
+        text: `🍺 ${toUnicode(beer.tap, 'circled')} • ABV ${beer.abv}%  •  ${beer.style}\n Tapped: ${helpers.dateFromObjectId(beer._id)}`,
         mrkdwn_in: ['text', 'pretext']
       }
     })
