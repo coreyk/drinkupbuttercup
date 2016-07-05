@@ -12,15 +12,15 @@ const msgDefaults = {
 
 let attachments = [
   {
-    title: 'Drink Up! shows what beers we have on tap',
+    title: 'Drinking alone:',
     color: '#fdd350',
     text: '`/beer` shows what\'s on tap only to you',
     mrkdwn_in: ['text']
   },
   {
-    title: 'Configuring Drink Up!',
+    title: 'Drinking socially:',
     color: '#fdd350',
-    text: '`/beer all` shows everyone what\'s on each tap \n',
+    text: '`/beer all` shows everyone in the channel what\'s on tap \n',
     mrkdwn_in: ['text']
   }
 ]
