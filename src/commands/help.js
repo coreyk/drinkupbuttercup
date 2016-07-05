@@ -14,13 +14,13 @@ let attachments = [
   {
     title: 'Drink Up! shows what beers we have on tap',
     color: '#2FA44F',
-    text: '`/beer tap #` returns just that tap\'s selection',
+    text: '`/beer` shows what\'s on each tap',
     mrkdwn_in: ['text']
   },
   {
     title: 'Configuring Drink Up!',
     color: '#E3E4E6',
-    text: '`/beer help` ... you\'re lookin at it! \n',
+    text: '`/beer set # "Name of beer"` ... taps a new keg! \n',
     mrkdwn_in: ['text']
   }
 ]
