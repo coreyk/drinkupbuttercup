@@ -38,8 +38,6 @@ const handler = (payload, res) => {
 
     attachments = beers.map((beer) => {
       return {
-        author_name: msgDefaults.username,
-        author_icon: msgDefaults.icon_emoji,
         title: `${beer.name}`,
         title_link: `${beer.url}`,
         color: '#2FA44F',
