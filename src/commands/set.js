@@ -53,6 +53,8 @@ const handler = (payload, res) => {
         console.log(htmlsrc);
         var abvarr = htmlsrc[0].match(/Alcohol by volume \(ABV\)\:(.*)%/);
         var stylearr = htmlsrc[0].match(/Style\:(.*)[\n\r]/);
+        var bascorearr = htmlsrc[0].match(/BA SCORE\s+(\d{2,3})[\n\r\t]/));
+        console.log("BA SCORE:", bascorearr[1]);
 
         var beers = [];
         beers[0] = {
@@ -61,7 +63,8 @@ const handler = (payload, res) => {
           url: resp.items[0].link || "",
           abv: abvarr[1].trim() || arr[3],
           style: stylearr[1].trim() || arr[4],
-          size: arr[5] || 5
+          score: bascorearr[1].trim() || arr[5],
+          size: arr[6] || 5
         };
 
         co(function*() {
@@ -81,7 +84,7 @@ const handler = (payload, res) => {
             title: `${beer.name}`,
             title_link: `${beer.url}`,
             color: '#2FA44F',
-            text: `🍺 ${toUnicode(beer.tap, 'circled')} • ABV ${beer.abv}%  •  ${beer.style}`,
+            text: `🍺 ${toUnicode(beer.tap, 'circled')} • ABV ${beer.abv}%  •  ${beer.style} • Ba: ${beer.score}`,
             mrkdwn_in: ['text', 'pretext']
           }
         })
