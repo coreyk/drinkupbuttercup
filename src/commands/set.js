@@ -50,49 +50,53 @@ const handler = (payload, res) => {
         }).get();
       })
       .then(function(htmlsrc) {
-        var abvarr = htmlsrc[0].match(/Alcohol by volume \(ABV\)\:(.*)%/);
-        var stylearr = htmlsrc[0].match(/Style\:(.*)[\n\r]/);
-        var bascorearr = htmlsrc[0].match(/BA SCORE\s+(\d{2,3})[\n\r\t]/);
+        if (htmlsrc) {
+          var abvarr = htmlsrc[0].match(/Alcohol by volume \(ABV\)\:(.*)%/) || [];
+          var stylearr = htmlsrc[0].match(/Style\:(.*)[\n\r]/) || [];
+          var bascorearr = htmlsrc[0].match(/BA SCORE\s+(\d{2,3})[\n\r\t]/) || [];
 
-        var beers = [];
-        beers[0] = {
-          tap: arr[1],
-          name: arr[2],
-          url: resp.items[0].link || "",
-          abv: abvarr[1].trim() || arr[3],
-          style: stylearr[1].trim() || arr[4],
-          score: bascorearr[1].trim() || arr[5],
-          size: arr[6] || 5
-        };
+          var beers = [];
+          beers[0] = {
+            tap: arr[1],
+            name: arr[2],
+            url: resp.items[0].link || "",
+            abv: abvarr[1].trim() || arr[3],
+            style: stylearr[1].trim() || arr[4],
+            score: bascorearr[1].trim() || arr[5],
+            size: arr[6] || 5
+          };
 
-        co(function*() {
-          var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
-          var r = yield db.collection('beers').insertOne(beers[0]);
-          assert.equal(1, r.insertedCount);
-          db.close();
-        }).catch(function(err) {
-          console.log(err.stack);
-        });
+          co(function*() {
+            var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
+            var r = yield db.collection('beers').insertOne(beers[0]);
+            assert.equal(1, r.insertedCount);
+            db.close();
+          }).catch(function(err) {
+            console.log(err.stack);
+          });
 
-        attachments = beers.map((beer) => {
-          return {
-            pretext: "Tapping keg...",
-            title: `${beer.name}`,
-            title_link: `${beer.url}`,
-            color: '#2FA44F',
-            text: `${toUnicode(beer.tap, 'circled')}  •  ABV ${beer.abv}%  •  ${beer.style}\n🏅 ${beer.score}/100  •  🍺`,
-            mrkdwn_in: ['text', 'pretext']
-          }
-        })
+          attachments = beers.map((beer) => {
+            return {
+              pretext: "Tapping keg...",
+              title: `${beer.name}`,
+              title_link: `${beer.url}`,
+              color: '#2FA44F',
+              text: `${toUnicode(beer.tap, 'circled')}  •  ABV ${beer.abv}%  •  ${beer.style}\n🏅 ${beer.score}/100  •  🍺`,
+              mrkdwn_in: ['text', 'pretext']
+            }
+          })
 
-        let msg = _.defaults({
-          channel: payload.channel_name,
-          attachments: attachments
-        }, msgDefaults)
+          let msg = _.defaults({
+            channel: payload.channel_name,
+            attachments: attachments
+          }, msgDefaults)
 
-        res.set('content-type', 'application/json')
-        res.status(200).json(msg)
-        return
+          res.set('content-type', 'application/json')
+          res.status(200).json(msg)
+          return
+        } else {
+          return
+        }
       })
 
   });
