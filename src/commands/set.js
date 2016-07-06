@@ -51,18 +51,22 @@ const handler = (payload, res) => {
       })
       .then(function(htmlsrc) {
         if (htmlsrc) {
+          var abv, style, score;
           var abvarr = htmlsrc[0].match(/Alcohol by volume \(ABV\)\:(.*)%/) || [];
           var stylearr = htmlsrc[0].match(/Style\:(.*)[\n\r]/) || [];
-          var bascorearr = htmlsrc[0].match(/BA SCORE\s+(\d{2,3})[\n\r\t]/) || [];
+          var scorearr = htmlsrc[0].match(/BA SCORE\s+(\d{2,3})[\n\r\t]/) || [];
+          abv = abvarr.length > 0 ? abvarr[1].trim() : "";
+          style = stylearr.length > 0 ? stylearr[1].trim() : "";
+          score = scorearr.length > 0 ? scorearr[1].trim() : "";
 
           var beers = [];
           beers[0] = {
             tap: arr[1],
             name: arr[2],
             url: resp.items[0].link || "",
-            abv: abvarr[1].trim() || arr[3],
-            style: stylearr[1].trim() || arr[4],
-            score: bascorearr[1].trim() || arr[5],
+            abv: abv || "???",
+            style: style || "???",
+            score: score || "???",
             size: arr[6] || 5
           };
 
