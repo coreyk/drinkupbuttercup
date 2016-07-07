@@ -29,87 +29,127 @@ function parseString(str) {
 }
 
 const handler = (payload, res) => {
-  // /beer set 1 Tasty beer
-  // /beer manual 1 "Tasty Beer" "http://www.beeradvocate/beer/profile/xxx" 8.5 "American IPA" 95 2016-07-08
 
   console.log(payload.text);
 
-  var arr = parseString(cognate.replace(payload.text)) || [];
+  // TAP A KEG THE EASY WAY
+  // /beer set 1 Tasty beer
+  if (payload.text.match(/^set \d .*$/)) {
+    var arr = parseString(cognate.replace(payload.text)) || [];
+    var manual_date = payload.text.match(/^set \d .* (\d{4}-\d{2}-\d{2})$/)
+    var tap_date = manual_date[1] ? new Date.parse(manual_date[1]) || Date.now();
 
-  customsearch.cse.list({
-    cx: config('GOOGLE_CSE_CX'),
-    q: arr[2],
-    auth: config('GOOGLE_API_KEY')
-  }, (err, resp) => {
-    if (err) {
-      return console.log('An error occured', err);
-    }
+    customsearch.cse.list({
+      cx: config('GOOGLE_CSE_CX'),
+      q: arr[2],
+      auth: config('GOOGLE_API_KEY')
+    }, (err, resp) => {
+      if (err) {
+        return console.log('An error occured', err);
+      }
 
-    let attachments = [];
+      let attachments = [];
 
-    scraperjs.StaticScraper.create(resp.items[0].link)
-      .scrape(function($) {
-        return $("#ba-content > div:nth-child(5)").map(function() {
-          return $(this).text();
-        }).get();
-      })
-      .then(function(htmlsrc) {
-        if (htmlsrc) {
-          var abv, style, score;
-          var abvarr = htmlsrc[0].match(/Alcohol by volume \(ABV\)\:(.*)%/) || [];
-          var stylearr = htmlsrc[0].match(/Style\:(.*)[\n\r]/) || [];
-          var scorearr = htmlsrc[0].match(/BA SCORE\s+(\d{2,3})[\n\r\t]/) || [];
-          abv = abvarr.length > 0 ? abvarr[1].trim() : "";
-          style = stylearr.length > 0 ? stylearr[1].trim() : "";
-          score = scorearr.length > 0 ? scorearr[1].trim() : "";
-          tap_date = new Date.parse(arr[7]) || Date.now();
+      scraperjs.StaticScraper.create(resp.items[0].link)
+        .scrape(function($) {
+          return $("#ba-content > div:nth-child(5)").map(function() {
+            return $(this).text();
+          }).get();
+        })
+        .then(function(htmlsrc) {
+          if (htmlsrc) {
 
-          var beers = [];
-          beers[0] = {
-            tap: arr[1],
-            name: arr[2],
-            url: resp.items[0].link || "",
-            abv: abv || "???",
-            style: style || "???",
-            score: score || "???",
-            tap_date: tap_date || "???",
-            size: arr[6] || 5
-          };
+            var abvarr = htmlsrc[0].match(/Alcohol by volume \(ABV\)\:(.*)%/) || [];
+            var stylearr = htmlsrc[0].match(/Style\:(.*)[\n\r]/) || [];
+            var scorearr = htmlsrc[0].match(/BA SCORE\s+(\d{2,3})[\n\r\t]/) || [];
 
-          co(function*() {
-            var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
-            var r = yield db.collection('beers').insertOne(beers[0]);
-            assert.equal(1, r.insertedCount);
-            db.close();
-          }).catch(function(err) {
-            console.log(err.stack);
-          });
+            var abv = abvarr.length > 0 ? abvarr[1].trim() : "";
+            var style = stylearr.length > 0 ? stylearr[1].trim() : "";
+            var score = scorearr.length > 0 ? scorearr[1].trim() : "";
 
-          attachments = beers.map((beer) => {
-            return {
-              pretext: "Tapping keg...",
-              title: `${beer.name}`,
-              title_link: `${beer.url}`,
-              color: '#2FA44F',
-              text: `${toUnicode(beer.tap, 'circled')}  •  ABV ${beer.abv}%  •  ${beer.style}\n🏅 ${beer.score}/100  •  🍺`,
-              mrkdwn_in: ['text', 'pretext']
-            }
-          })
+            var beers = [];
+            beers[0] = {
+              tap: arr[1],
+              name: arr[2],
+              url: resp.items[0].link || "",
+              abv: abv || "???",
+              style: style || "???",
+              score: score || "???",
+              tap_date: tap_date || "???",
+              size: arr[6] || 5
+            };
 
-          let msg = _.defaults({
-            channel: payload.channel_name,
-            attachments: attachments
-          }, msgDefaults)
+            co(function*() {
+              var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
+              var r = yield db.collection('beers').insertOne(beers[0]);
+              assert.equal(1, r.insertedCount);
+              db.close();
+            }).catch(function(err) {
+              console.log(err.stack);
+            });
 
-          res.set('content-type', 'application/json')
-          res.status(200).json(msg)
-          return
-        } else {
-          return
-        }
-      })
+            attachments = beers.map((beer) => {
+              return {
+                pretext: "Tapping keg...",
+                title: `${beer.name}`,
+                title_link: `${beer.url}`,
+                color: '#2FA44F',
+                text: `${toUnicode(beer.tap, 'circled')}  •  ABV ${beer.abv}%  •  ${beer.style}\n🏅 ${beer.score}/100  •  Days on tap: ${helpers.daysOnTap(beer.tap_date)}  •  🍺`,
+                mrkdwn_in: ['text', 'pretext']
+              }
+            })
 
-  });
+            let msg = _.defaults({
+              channel: payload.channel_name,
+              attachments: attachments
+            }, msgDefaults)
+
+            res.set('content-type', 'application/json')
+            res.status(200).json(msg)
+            return
+          } else {
+            return
+          }
+        })
+    });
+  }
+
+  // TAP A BEER THE HARD WAY
+  // /beer manual 1 "Tasty Beer" "http://www.beeradvocate/beer/profile/xxx" 8.5 "American IPA" 95 2016-07-08
+
+  // HELP!
+  if (payload.text.match(/^set\s.*$/)) {
+    let attachments = [
+      {
+        title: 'Tap a keg the easy way:',
+        color: '#2FA44F',
+        text: '`/beer set 1 Brooklyn Lager`\nSets tap #1 to Brooklyn Lager, grabs beer data automatically if it can be found, and sets tapped date to right now',
+        mrkdwn_in: ['text']
+      },
+      {
+        title: 'Tap a keg the easy way (with manual date):',
+        color: '#2FA44F',
+        text: '`/beer set 1 Brooklyn Lager 2016-07-01`\nSets tap #1 to Brooklyn Lager, and grabs beer data automatically if it can be found',
+        mrkdwn_in: ['text']
+      },
+      {
+        title: 'Tap a keg the hard way:',
+        color: '#fdd350',
+        text: '`/beer manual 1 "Brooklyn Lager" "http://www.beeradvocate.com/beer/profile/45/148/" 8.5 "American Amber" 86 2016-07-01`\nSet all info about a new beer manually.\nAll parameters are required. Make sure to double-quote name, URL, & beer style.',
+        mrkdwn_in: ['text']
+      }
+    ]
+
+    let msg = _.defaults({
+      channel: payload.channel_name,
+      attachments: attachments
+    }, msgDefaults)
+
+    res.set('content-type', 'application/json')
+    res.status(200).json(msg)
+    return
+  }
+
 }
 
 module.exports = {
