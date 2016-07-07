@@ -58,7 +58,7 @@ const handler = (payload, res) => {
           }).get();
         })
         .then(function(htmlsrc) {
-          if (htmlsrc) {
+          if (typeof htmlsrc !== 'undefined') {
 
             var abvarr = htmlsrc[0].match(/Alcohol by volume \(ABV\)\:(.*)%/) || [];
             var stylearr = htmlsrc[0].match(/Style\:(.*)[\n\r]/) || [];
@@ -109,6 +109,19 @@ const handler = (payload, res) => {
             res.status(200).json(msg)
             return
           } else {
+            attachments = [
+              {
+                text: 'Oops. Internet fail.',
+                mrkdwn_in: ['text']
+              }
+            ];
+            let msg = _.defaults({
+              channel: payload.channel_name,
+              attachments: attachments
+            }, msgDefaults)
+
+            res.set('content-type', 'application/json')
+            res.status(200).json(msg)
             return
           }
         })
