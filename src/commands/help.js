@@ -26,7 +26,7 @@ let attachments = [
   {
     title: 'Tap a keg:',
     color: '#b94545',
-    text: '``/beer set` for more info',
+    text: '`/beer set` for more info',
     mrkdwn_in: ['text']
   }
 ]
