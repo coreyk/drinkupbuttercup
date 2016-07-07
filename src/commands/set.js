@@ -51,6 +51,8 @@ const handler = (payload, res) => {
         return console.log('An error occured', err);
       }
 
+      console.log(resp);
+
       let attachments = [];
 
       scraperjs.StaticScraper.create(resp.items[0].link)
