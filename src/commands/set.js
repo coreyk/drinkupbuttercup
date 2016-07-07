@@ -38,7 +38,7 @@ const handler = (payload, res) => {
   if (payload.text.match(/^set \d .*$/)) {
     var arr = parseString(cognate.replace(payload.text)) || [];
     var manual_date = payload.text.match(/^set \d .* (\d{4}-\d{2}-\d{2})$/)
-    var tap_date = manual_date[1] ? Date.parse(manual_date[1]) : Date.now();
+    var tap_date = typeof manual_date[1] !== 'undefined' ? Date.parse(manual_date[1]) : Date.now();
 
     customsearch.cse.list({
       cx: config('GOOGLE_CSE_CX'),
