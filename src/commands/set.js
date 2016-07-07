@@ -129,7 +129,7 @@ const handler = (payload, res) => {
       {
         title: 'Tap a keg the easy way (with manual date):',
         color: '#2FA44F',
-        text: '`/beer set 1 Brooklyn Lager 2016-07-01`\nSets tap #1 to Brooklyn Lager, and grabs beer data automatically if it can be found',
+        text: '`/beer set 1 Brooklyn Lager 2016-07-01`\nSets tap #1 to Brooklyn Lager, grabs beer data automatically and sets tapped date to July 1st',
         mrkdwn_in: ['text']
       },
       {
