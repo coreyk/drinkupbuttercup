@@ -34,9 +34,7 @@ const handler = (payload, res) => {
   // TAP A KEG THE EASY WAY
   // /beer set 1 Tasty beer
   if (payload.text.match(/^set \d+ .*$/)) {
-    // var arr = parseString(cognate.replace(payload.text)) || [];
     var arr = cognate.replace(payload.text).match(/^set (\d+) (.*?) ?(?=\d{4}-\d{2}-\d{2}|$)/) || [];
-    console.log(arr);
     var manual_date = payload.text.match(/^set \d .* (\d{4}-\d{2}-\d{2})$/) || [];
     var tap_date = typeof manual_date[1] !== 'undefined' ? Date.parse(manual_date[1]) : Date.now();
 
@@ -128,11 +126,57 @@ const handler = (payload, res) => {
           }
         })
     });
-  } else {
+  } else if (payload.text.match(/^manual \d+ .*$/)) {
 
     // TAP A BEER THE HARD WAY
     // /beer manual 1 "Tasty Beer" "http://www.beeradvocate/beer/profile/xxx" 8.5 "American IPA" 95 2016-07-08
 
+    var arr = parseString(cognate.replace(payload.text)) || [];
+
+    let attachments = [];
+
+    var beers = [];
+    beers[0] = {
+      tap: arr[1],
+      name: arr[2],
+      url: arr[3],
+      abv: arr[4],
+      style: arr[5],
+      score: arr[6],
+      tap_date: arr[7],
+      size: arr[8] || 5
+    };
+
+    co(function*() {
+      var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
+      var r = yield db.collection('beers').insertOne(beers[0]);
+      assert.equal(1, r.insertedCount);
+      db.close();
+    }).catch(function(err) {
+      console.log(err.stack);
+    });
+
+    attachments = beers.map((beer) => {
+      return {
+        pretext: "Tapping keg...",
+        title: `${beer.name}`,
+        title_link: `${beer.url}`,
+        color: '#2FA44F',
+        text: `${toUnicode(beer.tap, 'circled')}  •  ABV ${beer.abv}%  •  ${beer.style}\n🏅 ${beer.score}/100  •  Days on tap: ${helpers.daysOnTap(beer.tap_date)}  •  🍺`,
+        mrkdwn_in: ['text', 'pretext']
+      }
+    })
+
+    let msg = _.defaults({
+      channel: payload.channel_name,
+      attachments: attachments
+    }, msgDefaults)
+
+    res.set('content-type', 'application/json')
+    res.status(200).json(msg)
+    return
+
+  } else {
     // HELP!
     let attachments = [
       {
