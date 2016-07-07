@@ -119,37 +119,36 @@ const handler = (payload, res) => {
   // /beer manual 1 "Tasty Beer" "http://www.beeradvocate/beer/profile/xxx" 8.5 "American IPA" 95 2016-07-08
 
   // HELP!
-  if (payload.text.match(/^set\s*$/)) {
-    let attachments = [
-      {
-        title: 'Tap a keg the easy way:',
-        color: '#2FA44F',
-        text: '`/beer set 1 Brooklyn Lager`\nSets tap #1 to Brooklyn Lager, grabs beer data automatically if it can be found, and sets tapped date to right now',
-        mrkdwn_in: ['text']
-      },
-      {
-        title: 'Tap a keg the easy way (with manual date):',
-        color: '#2FA44F',
-        text: '`/beer set 1 Brooklyn Lager 2016-07-01`\nSets tap #1 to Brooklyn Lager, grabs beer data automatically and sets tapped date to July 1st',
-        mrkdwn_in: ['text']
-      },
-      {
-        title: 'Tap a keg the hard way:',
-        color: '#fdd350',
-        text: '`/beer manual 1 "Brooklyn Lager" "http://www.beeradvocate.com/beer/profile/45/148/" 8.5 "American Amber" 86 2016-07-01`\nSet all info about a new beer manually.\nAll parameters are required. Make sure to double-quote name, URL, & beer style.',
-        mrkdwn_in: ['text']
-      }
-    ]
+  let attachments = [
+    {
+      title: 'Tap a keg the easy way:',
+      color: '#2FA44F',
+      text: '`/beer set 1 Brooklyn Lager`\nSets tap #1 to Brooklyn Lager, grabs beer data automatically if it can be found, and sets tapped date to right now',
+      mrkdwn_in: ['text']
+    },
+    {
+      title: 'Tap a keg the easy way (with manual date):',
+      color: '#2FA44F',
+      text: '`/beer set 1 Brooklyn Lager 2016-07-01`\nSets tap #1 to Brooklyn Lager, grabs beer data automatically and sets tapped date to July 1st',
+      mrkdwn_in: ['text']
+    },
+    {
+      title: 'Tap a keg the hard way:',
+      color: '#fdd350',
+      text: '`/beer manual 1 "Brooklyn Lager" "http://www.beeradvocate.com/beer/profile/45/148/" 8.5 "American Amber" 86 2016-07-01`\nSet all info about a new beer manually.\nAll parameters are required. Make sure to double-quote name, URL, & beer style.',
+      mrkdwn_in: ['text']
+    }
+  ]
 
-    let msg = _.defaults({
-      channel: payload.channel_name,
-      attachments: attachments
-    }, msgDefaults)
+  let msg = _.defaults({
+    channel: payload.channel_name,
+    attachments: attachments
+  }, msgDefaults)
 
-    res.set('content-type', 'application/json')
-    res.status(200).json(msg)
-    return
-  }
+  res.set('content-type', 'application/json')
+  res.status(200).json(msg)
+  return
+
 
 }
 
