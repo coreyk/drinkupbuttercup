@@ -29,6 +29,10 @@ function parseString(str) {
 }
 
 const handler = (payload, res) => {
+  // /beer set 1 Tasty beer
+  // /beer manual 1 "Tasty Beer" "http://www.beeradvocate/beer/profile/xxx" 8.5 "American IPA" 95 2016-07-08
+
+  console.log(payload.text);
 
   var arr = parseString(cognate.replace(payload.text)) || [];
 
@@ -58,6 +62,7 @@ const handler = (payload, res) => {
           abv = abvarr.length > 0 ? abvarr[1].trim() : "";
           style = stylearr.length > 0 ? stylearr[1].trim() : "";
           score = scorearr.length > 0 ? scorearr[1].trim() : "";
+          tap_date = new Date.parse(arr[7]) || Date.now();
 
           var beers = [];
           beers[0] = {
@@ -67,6 +72,7 @@ const handler = (payload, res) => {
             abv: abv || "???",
             style: style || "???",
             score: score || "???",
+            tap_date: tap_date || "???",
             size: arr[6] || 5
           };
 
@@ -107,6 +113,6 @@ const handler = (payload, res) => {
 }
 
 module.exports = {
-  pattern: /set/ig,
+  pattern: /set|manual/ig,
   handler: handler
 }
