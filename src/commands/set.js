@@ -35,8 +35,9 @@ const handler = (payload, res) => {
 
   // TAP A KEG THE EASY WAY
   // /beer set 1 Tasty beer
-  if (payload.text.match(/^set \d .*$/)) {
-    var arr = parseString(cognate.replace(payload.text)) || [];
+  if (payload.text.match(/^set \d+ .*$/)) {
+    // var arr = parseString(cognate.replace(payload.text)) || [];
+    var arr = cognate.replace(payload.text).match(/^set (\d+) (.*)\s?(\d{4}-\d{2}-\d{2})?$/) || [];
     var manual_date = payload.text.match(/^set \d .* (\d{4}-\d{2}-\d{2})$/) || [];
     var tap_date = typeof manual_date[1] !== 'undefined' ? Date.parse(manual_date[1]) : Date.now();
 
@@ -77,7 +78,7 @@ const handler = (payload, res) => {
               style: style || "???",
               score: score || "???",
               tap_date: tap_date || "???",
-              size: arr[6] || 5
+              size: 5
             };
 
             co(function*() {
