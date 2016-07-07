@@ -118,7 +118,7 @@ const handler = (payload, res) => {
   // /beer manual 1 "Tasty Beer" "http://www.beeradvocate/beer/profile/xxx" 8.5 "American IPA" 95 2016-07-08
 
   // HELP!
-  if (payload.text.match(/^set\s.*$/)) {
+  if (payload.text.match(/^set\s*$/)) {
     let attachments = [
       {
         title: 'Tap a keg the easy way:',
