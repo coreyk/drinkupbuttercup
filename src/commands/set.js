@@ -51,6 +51,8 @@ const handler = (payload, res) => {
 
       let attachments = [];
 
+      console.log(resp.items[0].link);
+
       scraperjs.StaticScraper.create(resp.items[0].link)
         .scrape(function($) {
           return $("#ba-content > div:nth-child(5)").map(function() {
