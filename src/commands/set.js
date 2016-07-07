@@ -194,7 +194,7 @@ const handler = (payload, res) => {
       {
         title: 'Tap a keg the hard way:',
         color: '#fdd350',
-        text: '`/beer manual 1 "Brooklyn Lager" "http://www.beeradvocate.com/beer/profile/45/148/" 8.5 "American Amber" 86 2016-07-01`\nSet all info about a new beer manually.\nAll parameters are required. Make sure to double-quote name, URL, & beer style.',
+        text: '`/beer manual 1 "Brooklyn Lager" "http://www.beeradvocate.com/beer/profile/45/148/" 8.50 "American Amber" 86 2016-07-01`\nSets all info about a new beer manually. All parameters are required. Make sure to double-quote name, URL, & beer style.\n*Parameters:* tap number, beer name, BA URL, ABV, beer style, BA score, date tapped',
         mrkdwn_in: ['text']
       }
     ]
