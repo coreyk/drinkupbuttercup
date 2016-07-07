@@ -35,9 +35,9 @@ const handler = (payload, res) => {
   // /beer set 1 Tasty beer
   if (payload.text.match(/^set \d+ .*$/)) {
     // var arr = parseString(cognate.replace(payload.text)) || [];
-    var arr = cognate.replace(payload.text).match(/^set (\d+) (.*)\s?(\d{4}-\d{2}-\d{2})?$/) || [];
-    console.log("HEY! arr:", arr, "\n");
-    var manual_date = payload.text.match(/^set (\d+) (.*?) ?(?=\d{4}-\d{2}-\d{2}|$)/) || [];
+    var arr = cognate.replace(payload.text).match(/^set (\d+) (.*?) ?(?=\d{4}-\d{2}-\d{2}|$)/) || [];
+    console.log(arr);
+    var manual_date = payload.text.match(/^set \d .* (\d{4}-\d{2}-\d{2})$/) || [];
     var tap_date = typeof manual_date[1] !== 'undefined' ? Date.parse(manual_date[1]) : Date.now();
 
     customsearch.cse.list({
