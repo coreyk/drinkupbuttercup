@@ -44,7 +44,8 @@ const handler = (payload, res) => {
       var abv = helpers.isBlank(beer.abv) ? "" : `  •  ABV ${beer.abv}%`;
       var style = helpers.isBlank(beer.style) ? "" : `  •  ${beer.style}`;
       var score = helpers.isBlank(beer.score) ? "" : `🏅 ${beer.score}/100`;
-      var tap_date = helpers.isBlank(beer.tap_date) ? "" : `  •  Days on tap: ${helpers.daysOnTap(beer.tap_date)}`;
+      var status = beer.name.indexOf('Empty...') !== -1 ? "empty" : "on tap";
+      var tap_date = helpers.isBlank(beer.tap_date) ? "" : `  •  Days ${status}: ${helpers.daysOnTap(beer.tap_date)}`;
       return {
         title: `${beer.name}`,
         title_link: `${beer.url}`,
