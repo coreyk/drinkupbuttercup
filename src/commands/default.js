@@ -41,16 +41,19 @@ const handler = (payload, res) => {
     console.log(beers);
 
     attachments = beers.map((beer) => {
+      var stages = ["😒", "😓", "😔", "😕", "😣", "😧", "😨", "😩", "😲", "💀", "👻"];
       var abv = helpers.isBlank(beer.abv) ? "" : `  •  ABV ${beer.abv}%`;
       var style = helpers.isBlank(beer.style) ? "" : `  •  ${beer.style}`;
       var score = helpers.isBlank(beer.score) ? "" : `🏅 ${beer.score}/100`;
       var status = beer.name.indexOf('Empty...') !== -1 ? "empty" : "on tap";
-      var tap_date = helpers.isBlank(beer.tap_date) ? "" : `  •  Days ${status}: ${helpers.daysOnTap(beer.tap_date)}`;
+      var dayson = parseInt(helpers.daysOnTap(beer.tap_date)) < 10 ? helpers.daysOnTap(beer.tap_date) : "10" ;
+      var tap_date = helpers.isBlank(beer.tap_date) ? "" : `  •  Days ${status}: ${dayson}`;
+      var icon = status === "empty" ? `  •  ${stages[parseInt(dayson)]}` : "  •  🍺"
       return {
         title: `${beer.name}`,
         title_link: `${beer.url}`,
         color: '#fdd350',
-        text: `${toUnicode(beer.tap, 'circled')}${abv}${style}\n${score}${tap_date}  •  🍺`,
+        text: `${toUnicode(beer.tap, 'circled')}${abv}${style}\n${score}${tap_date}${icon}`,
         mrkdwn_in: ['text', 'pretext']
       }
     })
