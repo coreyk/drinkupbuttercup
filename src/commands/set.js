@@ -32,6 +32,8 @@ function parseString(str) {
 const handler = (payload, res) => {
 
   if (payload.text.match(/^set \d+ empty ?(?=\d{4}-\d{2}-\d{2}|$)/)) {
+    // Set empty keg
+
     var arr = cognate.replace(payload.text).match(/^set (\d+) (empty) ?(?=\d{4}-\d{2}-\d{2}|$)/) || [];
     var manual_date = payload.text.match(/^set \d empty (\d{4}-\d{2}-\d{2})$/) || [];
     var tap_date = typeof manual_date[1] !== 'undefined' ? Date.parse(manual_date[1]) : Date.now();
@@ -45,7 +47,7 @@ const handler = (payload, res) => {
       style: "",
       score: "",
       tap_date: tap_date,
-      size: 5
+      size: 0
     };
 
     co(function*() {
@@ -57,9 +59,30 @@ const handler = (payload, res) => {
       console.log(err.stack);
     });
 
-  // TAP A KEG THE EASY WAY
-  // /beer set 1 Tasty beer
+    attachments = beers.map((beer) => {
+      return {
+        pretext: "Setting empty keg...",
+        title: `${beer.name}`,
+        title_link: `${beer.url}`,
+        color: '#303030',
+        text: ``,
+        mrkdwn_in: ['text', 'pretext']
+      }
+    })
+
+    let msg = _.defaults({
+      channel: payload.channel_name,
+      attachments: attachments
+    }, msgDefaults)
+
+    res.set('content-type', 'application/json')
+    res.status(200).json(msg)
+    return
+
   } else if (payload.text.match(/^set \d+ .*$/)) {
+    // TAP A KEG THE EASY WAY
+    // /beer set 1 Tasty beer
+
     var arr = cognate.replace(payload.text).match(/^set (\d+) (.*?) ?(?=\d{4}-\d{2}-\d{2}|$)/) || [];
     var manual_date = payload.text.match(/^set \d .* (\d{4}-\d{2}-\d{2})$/) || [];
     var tap_date = typeof manual_date[1] !== 'undefined' ? Date.parse(manual_date[1]) : Date.now();
