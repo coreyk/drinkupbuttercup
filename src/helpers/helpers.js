@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 exports.dateFromObjectId = (objectId) => {
 	return new Date(parseInt(objectId.substring(0, 8), 16) * 1000);
 };
@@ -12,4 +14,8 @@ exports.daysBetween = (date1, date2) => {
 
 exports.daysOnTap = (date) => {
   return Math.ceil(exports.daysBetween(date, Date.now()));
+}
+
+exports.isBlank = (value) => {
+	return _.isNil(value) && _.isEmpty(value) && !_.isNumber(value) && _.isNan(value) && !_.isString(value);
 }

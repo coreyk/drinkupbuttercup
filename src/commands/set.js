@@ -31,9 +31,35 @@ function parseString(str) {
 
 const handler = (payload, res) => {
 
+  if (payload.text.match(/^set \d+ empty ?(?=\d{4}-\d{2}-\d{2}|$)/)) {
+    var arr = cognate.replace(payload.text).match(/^set (\d+) (empty) ?(?=\d{4}-\d{2}-\d{2}|$)/) || [];
+    var manual_date = payload.text.match(/^set \d empty (\d{4}-\d{2}-\d{2})$/) || [];
+    var tap_date = typeof manual_date[1] !== 'undefined' ? Date.parse(manual_date[1]) : Date.now();
+
+    var beers = [];
+    beers[0] = {
+      tap: arr[1],
+      name: "(Empty... 😭)",
+      url: "",
+      abv: abv || "---",
+      style: "",
+      score: "",
+      tap_date: tap_date,
+      size: 5
+    };
+
+    co(function*() {
+      var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
+      var r = yield db.collection('beers').insertOne(beers[0]);
+      assert.equal(1, r.insertedCount);
+      db.close();
+    }).catch(function(err) {
+      console.log(err.stack);
+    });
+
   // TAP A KEG THE EASY WAY
   // /beer set 1 Tasty beer
-  if (payload.text.match(/^set \d+ .*$/)) {
+  } else if (payload.text.match(/^set \d+ .*$/)) {
     var arr = cognate.replace(payload.text).match(/^set (\d+) (.*?) ?(?=\d{4}-\d{2}-\d{2}|$)/) || [];
     var manual_date = payload.text.match(/^set \d .* (\d{4}-\d{2}-\d{2})$/) || [];
     var tap_date = typeof manual_date[1] !== 'undefined' ? Date.parse(manual_date[1]) : Date.now();
@@ -76,7 +102,7 @@ const handler = (payload, res) => {
               abv: abv || "???",
               style: style || "???",
               score: score || "???",
-              tap_date: tap_date || "???",
+              tap_date: tap_date,
               size: 5
             };
 

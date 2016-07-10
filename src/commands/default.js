@@ -39,11 +39,15 @@ const handler = (payload, res) => {
     }
 
     attachments = beers.map((beer) => {
+      var abv = isBlank(beer.tap) ? "" : `  •  ABV ${beer.abv}%`;
+      var style = isBlank(beer.style) ? "" : `  •  ${beer.style}`;
+      var score = isBlank(beer.score) ? "" : `🏅 ${beer.score}/100`;
+      var tap_date = isBlank(beer.tap_date) ? "" : `  •  Days on tap: ${helpers.daysOnTap(beer.tap_date)}`;
       return {
         title: `${beer.name}`,
         title_link: `${beer.url}`,
         color: '#fdd350',
-        text: `${toUnicode(beer.tap, 'circled')}  •  ABV ${beer.abv}%  •  ${beer.style}\n🏅 ${beer.score}/100  •  Days on tap: ${helpers.daysOnTap(beer.tap_date)}  •  🍺`,
+        text: `${toUnicode(beer.tap, 'circled')}${abv}${style}\n${score}${tap_date}  •  🍺`,
         mrkdwn_in: ['text', 'pretext']
       }
     })
