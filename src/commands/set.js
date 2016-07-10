@@ -67,7 +67,7 @@ const handler = (payload, res) => {
         title: `${beer.name}`,
         title_link: `${beer.url}`,
         color: '#303030',
-        text: ``,
+        text: `${toUnicode(beer.tap, 'circled')}`,
         mrkdwn_in: ['text', 'pretext']
       }
     })
