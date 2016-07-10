@@ -38,6 +38,8 @@ const handler = (payload, res) => {
       beers.push(r[0]);
     }
 
+    console.log(beers);
+
     attachments = beers.map((beer) => {
       var abv = helpers.isBlank(beer.tap) ? "" : `  •  ABV ${beer.abv}%`;
       var style = helpers.isBlank(beer.style) ? "" : `  •  ${beer.style}`;

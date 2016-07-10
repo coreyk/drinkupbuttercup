@@ -247,6 +247,12 @@ const handler = (payload, res) => {
         color: '#fdd350',
         text: '`/beer manual 1 "Brooklyn Lager" "http://www.beeradvocate.com/beer/profile/45/148/" 8.50 "American Amber" 86 2016-07-01`\nSets all info about a new beer manually. All parameters are required. Make sure to double-quote name, URL, & beer style.\n*Parameters:* tap number, beer name, BA URL, ABV, beer style, BA score, date tapped',
         mrkdwn_in: ['text']
+      },
+      {
+        title: 'Set tap to empty:',
+        color: '#303030',
+        text: '`/beer set 1 empty`\nSets tap #1 to empty',
+        mrkdwn_in: ['text']
       }
     ]
 
