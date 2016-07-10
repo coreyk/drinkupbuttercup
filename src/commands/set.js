@@ -38,6 +38,8 @@ const handler = (payload, res) => {
     var manual_date = payload.text.match(/^set \d empty (\d{4}-\d{2}-\d{2})$/) || [];
     var tap_date = typeof manual_date[1] !== 'undefined' ? Date.parse(manual_date[1]) : Date.now();
 
+    let attachments = [];
+
     var beers = [];
     beers[0] = {
       tap: arr[1],
