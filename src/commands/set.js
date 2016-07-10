@@ -43,7 +43,7 @@ const handler = (payload, res) => {
     var beers = [];
     beers[0] = {
       tap: arr[1],
-      name: "(Empty... 😭)",
+      name: "(Empty...)",
       url: "",
       abv: "",
       style: "",
