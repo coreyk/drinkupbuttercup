@@ -41,7 +41,7 @@ const handler = (payload, res) => {
     console.log(beers);
 
     attachments = beers.map((beer) => {
-      var abv = helpers.isBlank(beer.tap) ? "" : `  •  ABV ${beer.abv}%`;
+      var abv = helpers.isBlank(beer.abv) ? "" : `  •  ABV ${beer.abv}%`;
       var style = helpers.isBlank(beer.style) ? "" : `  •  ${beer.style}`;
       var score = helpers.isBlank(beer.score) ? "" : `🏅 ${beer.score}/100`;
       var tap_date = helpers.isBlank(beer.tap_date) ? "" : `  •  Days on tap: ${helpers.daysOnTap(beer.tap_date)}`;
