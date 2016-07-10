@@ -41,7 +41,7 @@ const handler = (payload, res) => {
       tap: arr[1],
       name: "(Empty... 😭)",
       url: "",
-      abv: abv || "---",
+      abv: "",
       style: "",
       score: "",
       tap_date: tap_date,
