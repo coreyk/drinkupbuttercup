@@ -17,5 +17,5 @@ exports.daysOnTap = (date) => {
 }
 
 exports.isBlank = (value) => {
-	return _.isNil(value) && _.isEmpty(value) && !_.isNumber(value) && _.isNan(value) && !_.isString(value);
+	return _.isNil(value) && _.isEmpty(value) && !_.isNumber(value) && _.isNan(value);
 }

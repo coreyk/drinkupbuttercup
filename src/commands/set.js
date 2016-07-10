@@ -238,13 +238,13 @@ const handler = (payload, res) => {
       },
       {
         title: 'Tap a keg the easy way (with manual date):',
-        color: '#2FA44F',
+        color: '#fdd350',
         text: '`/beer set 1 Brooklyn Lager 2016-07-01`\nSets tap #1 to Brooklyn Lager, grabs beer data automatically and sets tapped date to July 1st',
         mrkdwn_in: ['text']
       },
       {
         title: 'Tap a keg the hard way:',
-        color: '#fdd350',
+        color: '#b94545',
         text: '`/beer manual 1 "Brooklyn Lager" "http://www.beeradvocate.com/beer/profile/45/148/" 8.50 "American Amber" 86 2016-07-01`\nSets all info about a new beer manually. All parameters are required. Make sure to double-quote name, URL, & beer style.\n*Parameters:* tap number, beer name, BA URL, ABV, beer style, BA score, date tapped',
         mrkdwn_in: ['text']
       },
