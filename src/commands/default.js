@@ -25,7 +25,7 @@ const handler = (payload, res) => {
 
     let col = db.collection('beers');
 
-    let taps = [1, 2, 3, 4];
+    let taps = [1, 2];
     let beers = [];
 
     for (var i = 0; i < taps.length; i++) {
