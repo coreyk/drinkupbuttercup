@@ -76,6 +76,32 @@ app.post('/commands/beer', (req, res) => {
   cmd.handler(payload, res)
 })
 
+app.post("/pour", function(req, res) {
+  var newPour = req.body;
+  newPour.createDate = new Date();
+
+  if (!(req.body.tap || req.body.amount)) {
+    handleError(res, "Invalid pour input", "Must provide a tap and an amount.", 400);
+  }
+
+  // db.collection(CONTACTS_COLLECTION).insertOne(newContact, function(err, doc) {
+  //   if (err) {
+  //     handleError(res, err.message, "Failed to create new contact.");
+  //   } else {
+  //     res.status(201).json(doc.ops[0]);
+  //   }
+  // });
+
+  co(function*() {
+    var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
+    var r = yield db.collection('pours').insertOne(newPour);
+    assert.equal(1, r.insertedCount);
+    db.close();
+  }).catch(function(err) {
+    console.log(err.stack);
+  });
+});
+
 app.get('/thirsty', (req, res) => {
   co(function*() {
     var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
