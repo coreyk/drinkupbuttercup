@@ -15,17 +15,17 @@
   },
   "dependencies": {
     "body-parser": "^1.15.0",
-    "botkit": "0.0.7",
+    "botkit": "0.2.2",
     "co": "^4.6.0",
     "cognate": "^0.1.2",
     "dotenv": "^2.0.0",
     "express": "^4.13.4",
-    "express-http-proxy": "^0.6.0",
-    "googleapis": "^2.1.7",
+    "express-http-proxy": "^0.9.1",
+    "googleapis": "^12.2.0",
     "lodash": "^4.6.1",
     "mongodb": "^2.1.18",
     "scraperjs": "^1.2.0",
-    "slack": "^6.1.0",
+    "slack": "^7.7.1",
     "to-unicode": "git://github.com/coreyk/to-unicode.git#numbers"
   },
   "keywords": [
@@ -37,6 +37,6 @@
   ],
   "license": "MIT",
   "engines": {
-    "node": "6.2.2"
+    "node": "~6.2.2"
   }
 }
