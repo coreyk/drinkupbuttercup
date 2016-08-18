@@ -54,6 +54,12 @@ co(function*() {
   console.log(err.stack);
 });
 
+// Generic error handler used by all endpoints.
+function handleError(res, reason, message, code) {
+  console.log("ERROR: " + reason);
+  res.status(code || 500).json({"error": message});
+}
+
 app.get('/', (req, res) => {
   res.send('\n 👋 🌍 \n')
 })
@@ -80,17 +86,10 @@ app.post("/pour", function(req, res) {
   var newPour = req.body;
   newPour.createDate = new Date();
 
-  if (!(req.body.tap || req.body.amount)) {
+  if (!(req.body.tap && req.body.amount)) {
+    console.log("error");
     handleError(res, "Invalid pour input", "Must provide a tap and an amount.", 400);
   }
-
-  // db.collection(CONTACTS_COLLECTION).insertOne(newContact, function(err, doc) {
-  //   if (err) {
-  //     handleError(res, err.message, "Failed to create new contact.");
-  //   } else {
-  //     res.status(201).json(doc.ops[0]);
-  //   }
-  // });
 
   co(function*() {
     var db = yield mongodb.MongoClient.connect(config('MONGODB_URI'));
@@ -101,6 +100,7 @@ app.post("/pour", function(req, res) {
     console.log(err.stack);
   });
 });
+
 
 app.get('/thirsty', (req, res) => {
   co(function*() {
