@@ -84,7 +84,7 @@ app.post('/commands/beer', (req, res) => {
 
 app.post("/pour", function(req, res) {
   var newPour = req.body;
-  newPour.createDate = new Date();
+  newPour.date = Date.now();
 
   if (!(req.body.tap && req.body.amount)) {
     console.log("error");
