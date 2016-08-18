@@ -86,7 +86,7 @@ const handler = (payload, res) => {
     // /beer set 1 Tasty beer
 
     var arr = cognate.replace(payload.text).match(/^set (\d+) (.*?) ?(?=\d{4}-\d{2}-\d{2}|$)/) || [];
-    var manual_date = payload.text.match(/^set \d .* (\d{4}-\d{2}-\d{2})$/) || [];
+    var manual_date = payload.text.match(/^set \d .* (\d{4}-\d{2}-\d{2} \d{1,2}:\d{2})$/) || [];
     var tap_date = typeof manual_date[1] !== 'undefined' ? Date.parse(manual_date[1]) : Date.now();
 
     customsearch.cse.list({
@@ -180,7 +180,7 @@ const handler = (payload, res) => {
   } else if (payload.text.match(/^manual \d+ .*$/)) {
 
     // TAP A BEER THE HARD WAY
-    // /beer manual 1 "Tasty Beer" "http://www.beeradvocate/beer/profile/xxx" 8.5 "American IPA" 95 2016-07-08
+    // /beer manual 1 "Tasty Beer" "http://www.beeradvocate/beer/profile/xxx" 8.5 "American IPA" 95 "2016-07-08 17:00" 5
 
     var arr = parseString(cognate.replace(payload.text)) || [];
 
@@ -194,7 +194,7 @@ const handler = (payload, res) => {
       abv: arr[4],
       style: arr[5],
       score: arr[6],
-      tap_date: arr[7],
+      tap_date: arr[7] ,
       size: arr[8] || 5
     };
 
@@ -237,15 +237,15 @@ const handler = (payload, res) => {
         mrkdwn_in: ['text']
       },
       {
-        title: 'Tap a keg the easy way (with manual date):',
+        title: 'Tap a keg the easy way (with manual date & time):',
         color: '#fdd350',
-        text: '`/beer set 1 Brooklyn Lager 2016-07-01`\nSets tap #1 to Brooklyn Lager, grabs beer data automatically and sets tapped date to July 1st',
+        text: '`/beer set 1 Brooklyn Lager 2016-07-01 17:00`\nSets tap #1 to Brooklyn Lager, grabs beer data automatically and sets tapped date to July 1st at 5pm Eastern',
         mrkdwn_in: ['text']
       },
       {
         title: 'Tap a keg the hard way:',
         color: '#b94545',
-        text: '`/beer manual 1 "Brooklyn Lager" "http://www.beeradvocate.com/beer/profile/45/148/" 8.50 "American Amber" 86 2016-07-01`\nSets all info about a new beer manually. All parameters are required. Make sure to double-quote name, URL, & beer style.\n*Parameters:* tap number, beer name, BA URL, ABV, beer style, BA score, date tapped',
+        text: '`/beer manual 1 "Brooklyn Lager" "http://www.beeradvocate.com/beer/profile/45/148/" 8.50 "American Amber" 86 "2016-07-01 17:00" 5`\nSets all info about a new beer manually. All parameters are required. Make sure to double-quote name, URL, beer style, and date & time.\n*Parameters:* tap number, beer name, BA URL, ABV, beer style, BA score, date & time tapped, keg size in gallons',
         mrkdwn_in: ['text']
       },
       {
